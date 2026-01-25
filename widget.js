@@ -191,18 +191,29 @@ function kawaiiApplyTheme() {
   root.style.setProperty('--kawaii-icon-size', (kawaiiFieldData.iconSize || 28) + 'px');
   root.style.setProperty('--kawaii-corner-size', (kawaiiFieldData.cornerSize || 12) + 'px');
 
-  // Set title
+  // Set title and title position
   var titleEl = document.getElementById('kawaii-title');
   var titleText = kawaiiFieldData.goalTitle || 'GOAL';
-  if (kawaiiFieldData.showTitle !== false && titleText) {
-    titleEl.textContent = titleText;
-    titleEl.classList.remove('hidden');
-  } else {
+  var titlePosition = kawaiiFieldData.titlePosition || 'top';
+
+  // Remove old position classes
+  titleEl.classList.remove('pos-top', 'pos-top-left', 'pos-top-right', 'hidden');
+
+  if (titlePosition === 'hidden') {
     titleEl.classList.add('hidden');
+  } else {
+    titleEl.textContent = titleText;
+    titleEl.classList.add('pos-' + titlePosition);
   }
 
-  // Set icon
+  // Set icon and icon position
   var iconEl = document.getElementById('kawaii-icon');
+  var iconPosition = kawaiiFieldData.iconPosition || 'left';
+
+  // Remove old icon position classes
+  iconEl.classList.remove('icon-left', 'icon-right', 'hidden');
+  titleEl.classList.remove('no-icon', 'icon-left', 'icon-right');
+
   if (kawaiiFieldData.showIcon !== false) {
     var iconType = kawaiiFieldData.iconType || 'star';
     if (iconType === 'custom' && kawaiiFieldData.customIcon) {
@@ -210,17 +221,43 @@ function kawaiiApplyTheme() {
     } else {
       iconEl.textContent = kawaiiIcons[iconType] || '⭐';
     }
-    iconEl.classList.remove('hidden');
-    titleEl.classList.remove('no-icon');
+    iconEl.classList.add('icon-' + iconPosition);
+    titleEl.classList.add('icon-' + iconPosition);
   } else {
     iconEl.classList.add('hidden');
     titleEl.classList.add('no-icon');
+  }
+
+  // Set values position
+  var valuesEl = document.getElementById('kawaii-values');
+  var valuesPosition = kawaiiFieldData.valuesPosition || 'below';
+  var barEl = document.getElementById('kawaii-bar');
+
+  // Remove old values position classes
+  valuesEl.classList.remove('pos-below', 'pos-below-left', 'pos-below-right', 'pos-inside', 'hidden');
+  barEl.classList.remove('has-values-inside');
+
+  if (valuesPosition === 'hidden') {
+    valuesEl.classList.add('hidden');
+  } else if (valuesPosition === 'inside') {
+    valuesEl.classList.add('pos-inside');
+    barEl.classList.add('has-values-inside');
+    // Move values inside bar
+    barEl.appendChild(valuesEl);
+  } else {
+    valuesEl.classList.add('pos-' + valuesPosition);
+    // Make sure values are outside bar (after bar in DOM)
+    if (valuesEl.parentNode === barEl) {
+      container.appendChild(valuesEl);
+    }
   }
 
   // Corner decorations
   var corners = document.querySelectorAll('.corner');
   if (kawaiiFieldData.showCorners === false) {
     corners.forEach(function(c) { c.style.display = 'none'; });
+  } else {
+    corners.forEach(function(c) { c.style.display = ''; });
   }
 
   // Set goal value
@@ -290,13 +327,17 @@ function kawaiiAnimateBar() {
   var container = document.getElementById('kawaii-note-container');
   var animation = kawaiiFieldData.barAnimation || 'bounce';
 
-  container.classList.remove('kawaii-bounce', 'kawaii-wiggle');
+  container.classList.remove('kawaii-bounce', 'kawaii-wiggle', 'kawaii-pulse', 'kawaii-shake');
   void container.offsetWidth;
 
   if (animation === 'bounce') {
     container.classList.add('kawaii-bounce');
   } else if (animation === 'wiggle') {
     container.classList.add('kawaii-wiggle');
+  } else if (animation === 'pulse') {
+    container.classList.add('kawaii-pulse');
+  } else if (animation === 'shake') {
+    container.classList.add('kawaii-shake');
   }
 }
 

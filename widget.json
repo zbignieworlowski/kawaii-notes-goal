@@ -4,27 +4,27 @@
     "label": "Goal Type",
     "value": "manual",
     "options": {
-      "manual": "Manual (chat commands)",
-      "follower": "Twitch: Followers",
-      "subscriber": "Twitch/YT: Subscribers",
-      "tip": "Tips/Donations",
-      "cheer": "Twitch: Bits/Cheers",
-      "member": "YouTube: Members",
-      "superchat": "YouTube: Super Chats"
+      "manual": "🖐️ Manual (chat commands only)",
+      "follower": "👥 Twitch: Followers",
+      "subscriber": "📺 Twitch/YT: Subscribers",
+      "tip": "💰 Tips/Donations",
+      "cheer": "💎 Twitch: Bits/Cheers",
+      "member": "⭐ YouTube: Members",
+      "superchat": "💬 YouTube: Super Chats"
     },
-    "group": "Goal Settings"
+    "group": "📊 Goal Settings"
   },
   "eventPeriod": {
     "type": "dropdown",
     "label": "Goal Period",
     "value": "session",
     "options": {
-      "session": "Session (current stream)",
-      "week": "This Week",
-      "month": "This Month",
-      "total": "All Time"
+      "session": "🔴 Session (current stream)",
+      "week": "📆 This Week",
+      "month": "🗓️ This Month",
+      "total": "♾️ All Time"
     },
-    "group": "Goal Settings"
+    "group": "📊 Goal Settings"
   },
   "goalAmount": {
     "type": "number",
@@ -32,7 +32,7 @@
     "value": 100,
     "min": 1,
     "max": 1000000,
-    "group": "Goal Settings"
+    "group": "📊 Goal Settings"
   },
   "currency": {
     "type": "dropdown",
@@ -48,27 +48,46 @@
       "R$": "R$ BRL",
       "kr": "kr SEK/NOK/DKK",
       "₹": "₹ INR",
-      "custom": "Custom (enter below)"
+      "custom": "✏️ Custom (enter below)"
     },
-    "group": "Goal Settings"
+    "group": "📊 Goal Settings"
   },
   "customCurrency": {
     "type": "text",
     "label": "Custom Currency Symbol",
     "value": "",
-    "group": "Goal Settings"
+    "group": "📊 Goal Settings"
   },
   "goalTitle": {
     "type": "text",
     "label": "Title Text",
     "value": "GOAL",
-    "group": "Title & Text"
+    "group": "📝 Title & Text"
   },
-  "showTitle": {
-    "type": "checkbox",
-    "label": "Show Title",
-    "value": true,
-    "group": "Title & Text"
+  "titlePosition": {
+    "type": "dropdown",
+    "label": "Title Position",
+    "value": "top",
+    "options": {
+      "top": "⬆️ Above (center)",
+      "top-left": "↖️ Above (left)",
+      "top-right": "↗️ Above (right)",
+      "hidden": "🚫 Hidden"
+    },
+    "group": "📝 Title & Text"
+  },
+  "valuesPosition": {
+    "type": "dropdown",
+    "label": "Progress Values (0/100)",
+    "value": "below",
+    "options": {
+      "below": "⬇️ Below (center)",
+      "below-left": "↙️ Below (left)",
+      "below-right": "↘️ Below (right)",
+      "inside": "⏺️ Inside bar",
+      "hidden": "🚫 Hidden"
+    },
+    "group": "📝 Title & Text"
   },
   "titleFontSize": {
     "type": "slider",
@@ -77,7 +96,7 @@
     "min": 8,
     "max": 28,
     "step": 1,
-    "group": "Title & Text"
+    "group": "📝 Title & Text"
   },
   "valuesFontSize": {
     "type": "slider",
@@ -86,14 +105,14 @@
     "min": 10,
     "max": 36,
     "step": 1,
-    "group": "Title & Text"
+    "group": "📝 Title & Text"
   },
   "colorTheme": {
     "type": "dropdown",
     "label": "Color Theme",
     "value": "mint",
     "options": {
-      "custom": "── Custom (manual colors) ──",
+      "custom": "🎨 Custom (manual colors)",
       "mint": "🌿 Mint Fresh",
       "pink": "🌸 Sakura Pink",
       "yellow": "🌻 Sunny Lemon",
@@ -150,7 +169,7 @@
       "watercolor": "🎨 Watercolor",
       "pixel": "👾 Pixel Art"
     },
-    "group": "Theme"
+    "group": "🎨 Theme"
   },
   "noteWidth": {
     "type": "slider",
@@ -159,7 +178,7 @@
     "min": 200,
     "max": 500,
     "step": 10,
-    "group": "Layout"
+    "group": "📐 Layout"
   },
   "barHeight": {
     "type": "slider",
@@ -168,7 +187,7 @@
     "min": 10,
     "max": 40,
     "step": 2,
-    "group": "Layout"
+    "group": "📐 Layout"
   },
   "cornerSize": {
     "type": "slider",
@@ -177,50 +196,60 @@
     "min": 0,
     "max": 20,
     "step": 2,
-    "group": "Layout"
+    "group": "📐 Layout"
   },
   "showCorners": {
     "type": "checkbox",
     "label": "Show Corner Decorations",
     "value": true,
-    "group": "Layout"
+    "group": "📐 Layout"
   },
   "noteBgColor": {
     "type": "colorpicker",
     "label": "Note Background",
     "value": "#fffef5",
-    "group": "Custom Colors"
+    "group": "🎨 Custom Colors"
   },
   "barFillColor": {
     "type": "colorpicker",
     "label": "Bar Fill Color",
     "value": "#a8e6cf",
-    "group": "Custom Colors"
+    "group": "🎨 Custom Colors"
   },
   "borderColor": {
     "type": "colorpicker",
     "label": "Border Color",
     "value": "#4a4a6a",
-    "group": "Custom Colors"
+    "group": "🎨 Custom Colors"
   },
   "textColor": {
     "type": "colorpicker",
     "label": "Text Color",
     "value": "#4a4a6a",
-    "group": "Custom Colors"
+    "group": "🎨 Custom Colors"
   },
   "showIcon": {
     "type": "checkbox",
     "label": "Show Icon",
     "value": true,
-    "group": "Icon"
+    "group": "🖼️ Icon"
+  },
+  "iconPosition": {
+    "type": "dropdown",
+    "label": "Icon Position",
+    "value": "left",
+    "options": {
+      "left": "⬅️ Left of Title",
+      "right": "➡️ Right of Title"
+    },
+    "group": "🖼️ Icon"
   },
   "iconType": {
     "type": "dropdown",
     "label": "Icon",
     "value": "star",
     "options": {
-      "custom": "Custom (upload below)",
+      "custom": "📤 Custom (upload below)",
       "star": "⭐ Star",
       "heart": "💖 Heart",
       "sparkle": "✨ Sparkle",
@@ -262,7 +291,7 @@
       "crystal": "🔮 Crystal Ball",
       "gem": "💠 Gem"
     },
-    "group": "Icon"
+    "group": "🖼️ Icon"
   },
   "iconSize": {
     "type": "slider",
@@ -271,35 +300,46 @@
     "min": 16,
     "max": 48,
     "step": 2,
-    "group": "Icon"
+    "group": "🖼️ Icon"
   },
   "customIcon": {
     "type": "image-input",
     "label": "Custom Icon Image",
     "value": "",
-    "group": "Icon"
+    "group": "🖼️ Icon"
+  },
+  "overflowBehavior": {
+    "type": "dropdown",
+    "label": "When Goal Exceeded",
+    "value": "show",
+    "options": {
+      "show": "📊 Show overflow (175/100)",
+      "cap": "🔒 Cap at goal (100/100)",
+      "hide": "👻 Hide after completion"
+    },
+    "group": "✨ Effects"
   },
   "celebrationEffect": {
     "type": "dropdown",
     "label": "Celebration Effect",
     "value": "hearts",
     "options": {
-      "none": "None",
-      "hearts": "Floating Hearts",
-      "stars": "Spinning Stars",
-      "confetti": "Pastel Confetti",
-      "sparkles": "Sparkle Burst",
-      "flowers": "Flower Shower",
-      "rainbow": "Rainbow Magic",
-      "bubbles": "Cute Bubbles",
-      "butterflies": "Butterflies",
-      "clouds": "Fluffy Clouds",
-      "candies": "Candy Rain",
-      "bunnies": "Bouncing Bunnies",
-      "cats": "Kitty Parade",
-      "mochi": "Mochi Bounce"
+      "none": "🚫 None",
+      "hearts": "💖 Floating Hearts",
+      "stars": "⭐ Spinning Stars",
+      "confetti": "🎊 Pastel Confetti",
+      "sparkles": "✨ Sparkle Burst",
+      "flowers": "🌸 Flower Shower",
+      "rainbow": "🌈 Rainbow Magic",
+      "bubbles": "🫧 Cute Bubbles",
+      "butterflies": "🦋 Butterflies",
+      "clouds": "☁️ Fluffy Clouds",
+      "candies": "🍬 Candy Rain",
+      "bunnies": "🐰 Bouncing Bunnies",
+      "cats": "🐱 Kitty Parade",
+      "mochi": "🍡 Mochi Bounce"
     },
-    "group": "Effects"
+    "group": "✨ Effects"
   },
   "effectDuration": {
     "type": "slider",
@@ -308,81 +348,72 @@
     "min": 1,
     "max": 8,
     "step": 1,
-    "group": "Effects"
+    "group": "✨ Effects"
   },
   "effectRepeat": {
     "type": "dropdown",
     "label": "Repeat Effect After 100%",
     "value": "once",
     "options": {
-      "once": "Only once (at goal)",
-      "every": "Every addition",
-      "milestones": "At milestones (100%, 200%...)"
+      "once": "1️⃣ Only once (at goal)",
+      "every": "🔄 Every addition",
+      "milestones": "🏆 At milestones (100%, 200%...)"
     },
-    "group": "Effects"
+    "group": "✨ Effects"
   },
   "barAnimation": {
     "type": "dropdown",
     "label": "Bar Animation on Progress",
     "value": "bounce",
     "options": {
-      "none": "None",
-      "bounce": "Cute Bounce",
-      "wiggle": "Wiggle"
+      "none": "🚫 None",
+      "bounce": "🎾 Cute Bounce",
+      "wiggle": "〰️ Wiggle",
+      "pulse": "💫 Pulse",
+      "shake": "📳 Shake"
     },
-    "group": "Effects"
+    "group": "✨ Effects"
   },
   "previewEffect": {
     "type": "checkbox",
-    "label": "Preview Effect Now",
+    "label": "👁️ Preview Effect Now (uncheck after)",
     "value": false,
-    "group": "Effects"
-  },
-  "overflowBehavior": {
-    "type": "dropdown",
-    "label": "When Goal Exceeded",
-    "value": "show",
-    "options": {
-      "show": "Show overflow (175/100)",
-      "cap": "Cap at goal (100/100)",
-      "hide": "Hide after completion"
-    },
-    "group": "Behavior"
+    "group": "✨ Effects"
   },
   "modCommands": {
     "type": "checkbox",
     "label": "Allow Mods to Use Commands",
     "value": true,
-    "group": "Commands"
+    "group": "⌨️ Commands"
   },
   "cmdAdd": {
     "type": "text",
-    "label": "Add Command",
+    "label": "➕ Add Command",
     "value": "!add",
-    "group": "Commands"
+    "group": "⌨️ Commands"
   },
   "cmdDrop": {
     "type": "text",
-    "label": "Drop Command",
+    "label": "➖ Drop Command",
     "value": "!drop",
-    "group": "Commands"
+    "group": "⌨️ Commands"
   },
   "cmdProgress": {
     "type": "text",
-    "label": "Set Progress Command",
+    "label": "📊 Set Progress Command",
     "value": "!progress",
-    "group": "Commands"
+    "group": "⌨️ Commands"
   },
   "cmdTarget": {
     "type": "text",
-    "label": "Set Target Command",
+    "label": "🎯 Set Target Command",
     "value": "!target",
-    "group": "Commands"
+    "group": "⌨️ Commands"
   },
   "cmdClear": {
     "type": "text",
-    "label": "Clear Command",
+    "label": "🗑️ Clear Command",
     "value": "!clear",
-    "group": "Commands"
+    "group": "⌨️ Commands"
   }
 }
