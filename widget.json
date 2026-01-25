@@ -1,0 +1,388 @@
+{
+  "eventType": {
+    "type": "dropdown",
+    "label": "Goal Type",
+    "value": "manual",
+    "options": {
+      "manual": "Manual (chat commands)",
+      "follower": "Twitch: Followers",
+      "subscriber": "Twitch/YT: Subscribers",
+      "tip": "Tips/Donations",
+      "cheer": "Twitch: Bits/Cheers",
+      "member": "YouTube: Members",
+      "superchat": "YouTube: Super Chats"
+    },
+    "group": "Goal Settings"
+  },
+  "eventPeriod": {
+    "type": "dropdown",
+    "label": "Goal Period",
+    "value": "session",
+    "options": {
+      "session": "Session (current stream)",
+      "week": "This Week",
+      "month": "This Month",
+      "total": "All Time"
+    },
+    "group": "Goal Settings"
+  },
+  "goalAmount": {
+    "type": "number",
+    "label": "Goal Target",
+    "value": 100,
+    "min": 1,
+    "max": 1000000,
+    "group": "Goal Settings"
+  },
+  "currency": {
+    "type": "dropdown",
+    "label": "Currency Symbol (for tips)",
+    "value": "$",
+    "options": {
+      "$": "$ USD",
+      "€": "€ EUR",
+      "£": "£ GBP",
+      "zł": "zł PLN",
+      "¥": "¥ JPY/CNY",
+      "₽": "₽ RUB",
+      "R$": "R$ BRL",
+      "kr": "kr SEK/NOK/DKK",
+      "₹": "₹ INR",
+      "custom": "Custom (enter below)"
+    },
+    "group": "Goal Settings"
+  },
+  "customCurrency": {
+    "type": "text",
+    "label": "Custom Currency Symbol",
+    "value": "",
+    "group": "Goal Settings"
+  },
+  "goalTitle": {
+    "type": "text",
+    "label": "Title Text",
+    "value": "GOAL",
+    "group": "Title & Text"
+  },
+  "showTitle": {
+    "type": "checkbox",
+    "label": "Show Title",
+    "value": true,
+    "group": "Title & Text"
+  },
+  "titleFontSize": {
+    "type": "slider",
+    "label": "Title Font Size",
+    "value": 14,
+    "min": 8,
+    "max": 28,
+    "step": 1,
+    "group": "Title & Text"
+  },
+  "valuesFontSize": {
+    "type": "slider",
+    "label": "Values Font Size",
+    "value": 18,
+    "min": 10,
+    "max": 36,
+    "step": 1,
+    "group": "Title & Text"
+  },
+  "colorTheme": {
+    "type": "dropdown",
+    "label": "Color Theme",
+    "value": "mint",
+    "options": {
+      "custom": "── Custom (manual colors) ──",
+      "mint": "🌿 Mint Fresh",
+      "pink": "🌸 Sakura Pink",
+      "yellow": "🌻 Sunny Lemon",
+      "lavender": "💜 Lavender Dream",
+      "peach": "🍑 Peachy Keen",
+      "sky": "☁️ Sky Blue",
+      "coral": "🪸 Coral Reef",
+      "lilac": "🪻 Lilac Mist",
+      "seafoam": "🌊 Seafoam",
+      "blush": "🌷 Rosy Blush",
+      "butter": "🧈 Buttercream",
+      "periwinkle": "💙 Periwinkle",
+      "honeydew": "🍈 Honeydew",
+      "rose": "🌹 Rose Quartz",
+      "apricot": "🍊 Apricot",
+      "aqua": "💎 Aqua Marine",
+      "cotton": "🍭 Cotton Candy",
+      "matcha": "🍵 Matcha Latte",
+      "strawberry": "🍓 Strawberry Milk",
+      "vanilla": "🍦 Vanilla Bean",
+      "bubblegum": "🎀 Bubblegum Pop",
+      "cloud": "✨ Cloud Nine",
+      "fairy": "🧚 Fairy Dust",
+      "mochi": "🍡 Mochi",
+      "boba": "🧋 Boba Tea",
+      "unicorn": "🦄 Unicorn Magic",
+      "pastel-rainbow": "🌈 Pastel Rainbow",
+      "cherry": "🌸 Cherry Blossom",
+      "melon": "🍈 Melon Soda",
+      "grape": "🍇 Grape Candy",
+      "_style_divider": "────── STYLE THEMES ──────",
+      "notebook": "📓 Notebook Paper",
+      "grid": "📐 Grid Paper",
+      "washi": "🎨 Washi Tape",
+      "chalkboard": "🖍️ Chalkboard",
+      "polaroid": "📷 Polaroid",
+      "ticket": "🎫 Ticket Stub",
+      "craft": "📦 Craft Paper",
+      "sticker": "🏷️ Sticker",
+      "gingham": "🧺 Gingham Check",
+      "polka": "⚫ Polka Dots",
+      "starry": "⭐ Starry Night",
+      "hearts": "💕 Heart Pattern",
+      "clouds": "☁️ Fluffy Cloud",
+      "sprinkles": "🍩 Sprinkles",
+      "marble": "🪨 Marble",
+      "holo": "✨ Holographic",
+      "neon": "💡 Neon Glow",
+      "denim": "👖 Denim Patch",
+      "lace": "🧵 Lace Border",
+      "ribbon": "🎀 Ribbon Bow",
+      "letter": "✉️ Love Letter",
+      "stamp": "📮 Postage Stamp",
+      "watercolor": "🎨 Watercolor",
+      "pixel": "👾 Pixel Art"
+    },
+    "group": "Theme"
+  },
+  "noteWidth": {
+    "type": "slider",
+    "label": "Note Width",
+    "value": 320,
+    "min": 200,
+    "max": 500,
+    "step": 10,
+    "group": "Layout"
+  },
+  "barHeight": {
+    "type": "slider",
+    "label": "Bar Height",
+    "value": 20,
+    "min": 10,
+    "max": 40,
+    "step": 2,
+    "group": "Layout"
+  },
+  "cornerSize": {
+    "type": "slider",
+    "label": "Corner Decoration Size",
+    "value": 12,
+    "min": 0,
+    "max": 20,
+    "step": 2,
+    "group": "Layout"
+  },
+  "showCorners": {
+    "type": "checkbox",
+    "label": "Show Corner Decorations",
+    "value": true,
+    "group": "Layout"
+  },
+  "noteBgColor": {
+    "type": "colorpicker",
+    "label": "Note Background",
+    "value": "#fffef5",
+    "group": "Custom Colors"
+  },
+  "barFillColor": {
+    "type": "colorpicker",
+    "label": "Bar Fill Color",
+    "value": "#a8e6cf",
+    "group": "Custom Colors"
+  },
+  "borderColor": {
+    "type": "colorpicker",
+    "label": "Border Color",
+    "value": "#4a4a6a",
+    "group": "Custom Colors"
+  },
+  "textColor": {
+    "type": "colorpicker",
+    "label": "Text Color",
+    "value": "#4a4a6a",
+    "group": "Custom Colors"
+  },
+  "showIcon": {
+    "type": "checkbox",
+    "label": "Show Icon",
+    "value": true,
+    "group": "Icon"
+  },
+  "iconType": {
+    "type": "dropdown",
+    "label": "Icon",
+    "value": "star",
+    "options": {
+      "custom": "Custom (upload below)",
+      "star": "⭐ Star",
+      "heart": "💖 Heart",
+      "sparkle": "✨ Sparkle",
+      "flower": "🌸 Flower",
+      "rainbow": "🌈 Rainbow",
+      "moon": "🌙 Moon",
+      "cloud": "☁️ Cloud",
+      "diamond": "💎 Diamond",
+      "music": "🎵 Music",
+      "gift": "🎁 Gift",
+      "coin": "🪙 Coin",
+      "dollar": "💵 Dollar",
+      "trophy": "🏆 Trophy",
+      "crown": "👑 Crown",
+      "butterfly": "🦋 Butterfly",
+      "candy": "🍬 Candy",
+      "cake": "🧁 Cupcake",
+      "cherry": "🍒 Cherry",
+      "strawberry": "🍓 Strawberry",
+      "peach": "🍑 Peach",
+      "lollipop": "🍭 Lollipop",
+      "donut": "🍩 Donut",
+      "icecream": "🍦 Ice Cream",
+      "cookie": "🍪 Cookie",
+      "milk": "🥛 Milk",
+      "boba": "🧋 Boba",
+      "cat": "🐱 Cat",
+      "bunny": "🐰 Bunny",
+      "bear": "🧸 Teddy Bear",
+      "paw": "🐾 Paw",
+      "unicorn": "🦄 Unicorn",
+      "fairy": "🧚 Fairy",
+      "angel": "👼 Angel",
+      "ribbon": "🎀 Ribbon",
+      "bow": "🎀 Bow",
+      "balloon": "🎈 Balloon",
+      "confetti": "🎊 Confetti",
+      "magic": "🪄 Magic Wand",
+      "crystal": "🔮 Crystal Ball",
+      "gem": "💠 Gem"
+    },
+    "group": "Icon"
+  },
+  "iconSize": {
+    "type": "slider",
+    "label": "Icon Size",
+    "value": 28,
+    "min": 16,
+    "max": 48,
+    "step": 2,
+    "group": "Icon"
+  },
+  "customIcon": {
+    "type": "image-input",
+    "label": "Custom Icon Image",
+    "value": "",
+    "group": "Icon"
+  },
+  "celebrationEffect": {
+    "type": "dropdown",
+    "label": "Celebration Effect",
+    "value": "hearts",
+    "options": {
+      "none": "None",
+      "hearts": "Floating Hearts",
+      "stars": "Spinning Stars",
+      "confetti": "Pastel Confetti",
+      "sparkles": "Sparkle Burst",
+      "flowers": "Flower Shower",
+      "rainbow": "Rainbow Magic",
+      "bubbles": "Cute Bubbles",
+      "butterflies": "Butterflies",
+      "clouds": "Fluffy Clouds",
+      "candies": "Candy Rain",
+      "bunnies": "Bouncing Bunnies",
+      "cats": "Kitty Parade",
+      "mochi": "Mochi Bounce"
+    },
+    "group": "Effects"
+  },
+  "effectDuration": {
+    "type": "slider",
+    "label": "Effect Duration (seconds)",
+    "value": 3,
+    "min": 1,
+    "max": 8,
+    "step": 1,
+    "group": "Effects"
+  },
+  "effectRepeat": {
+    "type": "dropdown",
+    "label": "Repeat Effect After 100%",
+    "value": "once",
+    "options": {
+      "once": "Only once (at goal)",
+      "every": "Every addition",
+      "milestones": "At milestones (100%, 200%...)"
+    },
+    "group": "Effects"
+  },
+  "barAnimation": {
+    "type": "dropdown",
+    "label": "Bar Animation on Progress",
+    "value": "bounce",
+    "options": {
+      "none": "None",
+      "bounce": "Cute Bounce",
+      "wiggle": "Wiggle"
+    },
+    "group": "Effects"
+  },
+  "previewEffect": {
+    "type": "checkbox",
+    "label": "Preview Effect Now",
+    "value": false,
+    "group": "Effects"
+  },
+  "overflowBehavior": {
+    "type": "dropdown",
+    "label": "When Goal Exceeded",
+    "value": "show",
+    "options": {
+      "show": "Show overflow (175/100)",
+      "cap": "Cap at goal (100/100)",
+      "hide": "Hide after completion"
+    },
+    "group": "Behavior"
+  },
+  "modCommands": {
+    "type": "checkbox",
+    "label": "Allow Mods to Use Commands",
+    "value": true,
+    "group": "Commands"
+  },
+  "cmdAdd": {
+    "type": "text",
+    "label": "Add Command",
+    "value": "!add",
+    "group": "Commands"
+  },
+  "cmdDrop": {
+    "type": "text",
+    "label": "Drop Command",
+    "value": "!drop",
+    "group": "Commands"
+  },
+  "cmdProgress": {
+    "type": "text",
+    "label": "Set Progress Command",
+    "value": "!progress",
+    "group": "Commands"
+  },
+  "cmdTarget": {
+    "type": "text",
+    "label": "Set Target Command",
+    "value": "!target",
+    "group": "Commands"
+  },
+  "cmdClear": {
+    "type": "text",
+    "label": "Clear Command",
+    "value": "!clear",
+    "group": "Commands"
+  }
+}

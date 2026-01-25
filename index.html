@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kawaii Notes Goal - StreamElements Widget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Nunito:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #fff5f7 0%, #fef6e8 50%, #f0f8ff 100%);
+      min-height: 100vh;
+      color: #4a4a6a;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #888;
+      text-decoration: none;
+      margin-bottom: 30px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: #ff69b4;
+    }
+
+    header {
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ff69b4, #a8e6cf, #c9b1ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .description {
+      color: #666;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .feature {
+      background: rgba(168, 230, 207, 0.3);
+      color: #4a8a6a;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .feature.pink {
+      background: rgba(255, 183, 197, 0.3);
+      color: #c45a7a;
+    }
+
+    .feature.purple {
+      background: rgba(201, 177, 255, 0.3);
+      color: #7a5aaa;
+    }
+
+    /* Theme Preview Section */
+    .themes-section {
+      margin-bottom: 40px;
+    }
+
+    .themes-section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      color: #4a4a6a;
+    }
+
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .theme-mini {
+      background: #fffef5;
+      border: 2px solid #4a4a6a;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      position: relative;
+    }
+
+    .theme-mini::before, .theme-mini::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border: 2px solid #4a4a6a;
+      background: #f0f8ff;
+      border-radius: 2px;
+    }
+
+    .theme-mini::before {
+      top: -4px;
+      left: -4px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .theme-mini::after {
+      top: -4px;
+      right: -4px;
+      border-left: none;
+      border-bottom: none;
+    }
+
+    .theme-mini-name {
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #4a4a6a;
+    }
+
+    .theme-mini-bar {
+      height: 12px;
+      border: 2px solid #4a4a6a;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+
+    .theme-mini-fill {
+      height: 100%;
+      width: 65%;
+      border-radius: 4px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 0;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .tab {
+      padding: 14px 24px;
+      background: transparent;
+      border: none;
+      color: #888;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .tab:hover {
+      color: #4a4a6a;
+    }
+
+    .tab.active {
+      color: #ff69b4;
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #ff69b4;
+    }
+
+    .code-container {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .code-panel {
+      display: none;
+    }
+
+    .code-panel.active {
+      display: block;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fffef5;
+      padding: 12px 20px;
+      border-radius: 12px 12px 0 0;
+      border: 2px solid #4a4a6a;
+      border-bottom: none;
+    }
+
+    .code-header span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    .copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(168, 230, 207, 0.3);
+      border: 2px solid #a8e6cf;
+      border-radius: 6px;
+      color: #4a8a6a;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: rgba(168, 230, 207, 0.5);
+      transform: scale(1.02);
+    }
+
+    .copy-btn.copied {
+      background: rgba(255, 183, 197, 0.3);
+      border-color: #ffb7c5;
+      color: #c45a7a;
+    }
+
+    pre {
+      background: #fffef5;
+      border: 2px solid #4a4a6a;
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 20px;
+      overflow-x: auto;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #4a4a6a;
+    }
+
+    .instructions {
+      background: #fffef5;
+      border: 2px solid #4a4a6a;
+      border-radius: 12px;
+      padding: 30px;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .instructions::before, .instructions::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border: 2px solid #4a4a6a;
+      background: #a8e6cf;
+      border-radius: 2px;
+    }
+
+    .instructions::before {
+      top: -6px;
+      left: -6px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .instructions::after {
+      top: -6px;
+      right: -6px;
+      border-left: none;
+      border-bottom: none;
+    }
+
+    .instructions h2 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      color: #4a4a6a;
+    }
+
+    .instructions ol {
+      padding-left: 20px;
+      color: #666;
+      line-height: 2;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+    }
+
+    .instructions strong {
+      color: #4a4a6a;
+    }
+
+    .instructions code {
+      background: rgba(255, 183, 197, 0.3);
+      color: #c45a7a;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    .commands-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .commands-table th,
+    .commands-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .commands-table th {
+      color: #888;
+      font-weight: 500;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .commands-table td code {
+      background: rgba(201, 177, 255, 0.3);
+      color: #7a5aaa;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 2px solid #e0e0e0;
+      color: #888;
+    }
+
+    footer a {
+      color: #ff69b4;
+      text-decoration: none;
+    }
+
+    /* Scrollbar */
+    pre::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    pre::-webkit-scrollbar-track {
+      background: #f0f0f0;
+    }
+
+    pre::-webkit-scrollbar-thumb {
+      background: #c9b1ff;
+      border-radius: 4px;
+    }
+
+    pre::-webkit-scrollbar-thumb:hover {
+      background: #a8e6cf;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/streamelements/" class="back-link">← Back to Widgets</a>
+
+    <header>
+      <h1>Kawaii Notes Goal</h1>
+      <p class="description">
+        Cute sticky note style goal widget with pastel colors. Bullet journal aesthetic perfect for cozy streams. Features 30 kawaii color themes, 40 cute icons, and 13 celebration effects. Uses StreamElements session data for automatic tracking.
+      </p>
+      <div class="features">
+        <span class="feature pink">54 Themes</span>
+        <span class="feature">40 Cute Icons</span>
+        <span class="feature purple">13 Celebrations</span>
+        <span class="feature pink">24 Note Styles</span>
+        <span class="feature">30 Colors</span>
+        <span class="feature purple">Chat Commands</span>
+      </div>
+    </header>
+
+    <div class="themes-section">
+      <h2>30 Kawaii Color Themes</h2>
+      <div class="themes-grid">
+        <div class="theme-mini">
+          <div class="theme-mini-name">Mint Fresh</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #a8e6cf;"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Sakura Pink</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #ffb7c5;"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Sunny Lemon</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #ffeaa7;"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Lavender Dream</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #c9b1ff;"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Peachy Keen</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #ffd4a3;"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Sky Blue</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #a3d5ff;"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Coral Reef</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #ff9a9e;"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Lilac Mist</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #d4a5ff;"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Unicorn Magic</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: linear-gradient(90deg, #ff9a9e, #ffeaa7, #a8e6cf, #a3d5ff, #c9b1ff);"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Cotton Candy</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: linear-gradient(90deg, #ffb7c5, #a3d5ff);"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Boba Tea</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #d4a574;"></div></div>
+        </div>
+        <div class="theme-mini">
+          <div class="theme-mini-name">Strawberry Milk</div>
+          <div class="theme-mini-bar"><div class="theme-mini-fill" style="background: #ff8a9b;"></div></div>
+        </div>
+      </div>
+      <p style="margin-top: 15px; color: #888; font-size: 0.9rem;">
+        <a href="themes.html" style="color: #ff69b4;">View all 30 theme previews →</a>
+      </p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="html">HTML</button>
+      <button class="tab" data-tab="css">CSS</button>
+      <button class="tab" data-tab="js">JavaScript</button>
+      <button class="tab" data-tab="fields">Fields</button>
+      <button class="tab" data-tab="data">Data</button>
+    </div>
+
+    <div class="code-container">
+      <div class="code-panel active" id="panel-html">
+        <div class="code-header">
+          <span>widget.html</span>
+          <button class="copy-btn" data-target="code-html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy Code
+          </button>
+        </div>
+        <pre><code id="code-html"></code></pre>
+      </div>
+
+      <div class="code-panel" id="panel-css">
+        <div class="code-header">
+          <span>widget.css</span>
+          <button class="copy-btn" data-target="code-css">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy Code
+          </button>
+        </div>
+        <pre><code id="code-css"></code></pre>
+      </div>
+
+      <div class="code-panel" id="panel-js">
+        <div class="code-header">
+          <span>widget.js</span>
+          <button class="copy-btn" data-target="code-js">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy Code
+          </button>
+        </div>
+        <pre><code id="code-js"></code></pre>
+      </div>
+
+      <div class="code-panel" id="panel-fields">
+        <div class="code-header">
+          <span>widget.json (Fields)</span>
+          <button class="copy-btn" data-target="code-fields">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy Code
+          </button>
+        </div>
+        <pre><code id="code-fields"></code></pre>
+      </div>
+
+      <div class="code-panel" id="panel-data">
+        <div class="code-header">
+          <span>widget.data.json (Data)</span>
+          <button class="copy-btn" data-target="code-data">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy Code
+          </button>
+        </div>
+        <pre><code id="code-data"></code></pre>
+      </div>
+    </div>
+
+    <div class="instructions">
+      <h2>Setup Instructions</h2>
+      <ol>
+        <li>Go to <strong>StreamElements</strong> → My Overlays → <strong>New Overlay</strong></li>
+        <li>Name it "Kawaii Notes Goal" and click Create</li>
+        <li>Click <strong>Add Widget</strong> → Static/Custom → <strong>Custom Widget</strong></li>
+        <li>Click on the widget → <strong>Open Editor</strong></li>
+        <li>Copy each code section into the matching tab (HTML, CSS, JS, Fields, Data)</li>
+        <li>Click <strong>Save</strong></li>
+        <li>Use the <strong>Settings</strong> panel to choose themes, icons, and effects</li>
+      </ol>
+
+      <h2 style="margin-top: 30px;">Chat Commands</h2>
+      <table class="commands-table">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>Example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>!add</code></td>
+            <td><code>!add 10</code></td>
+            <td>Add amount to progress</td>
+          </tr>
+          <tr>
+            <td><code>!drop</code></td>
+            <td><code>!drop 5</code></td>
+            <td>Subtract amount from progress</td>
+          </tr>
+          <tr>
+            <td><code>!progress</code></td>
+            <td><code>!progress 50</code></td>
+            <td>Set progress to specific value</td>
+          </tr>
+          <tr>
+            <td><code>!target</code></td>
+            <td><code>!target 200</code></td>
+            <td>Set goal target amount</td>
+          </tr>
+          <tr>
+            <td><code>!clear</code></td>
+            <td><code>!clear</code></td>
+            <td>Reset progress to zero</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      <p>Made with 💖 by <a href="https://animationblondie.com">animationblondie</a></p>
+    </footer>
+  </div>
+
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Copy functionality
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.dataset.target;
+        const code = document.getElementById(targetId).textContent;
+
+        try {
+          await navigator.clipboard.writeText(code);
+          btn.classList.add('copied');
+          btn.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Copied!
+          `;
+
+          setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy Code
+            `;
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+    });
+
+    // Load code files
+    async function loadCode() {
+      const basePath = '/streamelements/widget/kawaii-notes-goal/';
+
+      try {
+        const [html, css, js, fields, data] = await Promise.all([
+          fetch(basePath + 'widget.html').then(r => r.text()),
+          fetch(basePath + 'widget.css').then(r => r.text()),
+          fetch(basePath + 'widget.js').then(r => r.text()),
+          fetch(basePath + 'widget.json').then(r => r.text()),
+          fetch(basePath + 'widget.data.json').then(r => r.text())
+        ]);
+
+        document.getElementById('code-html').textContent = html;
+        document.getElementById('code-css').textContent = css;
+        document.getElementById('code-js').textContent = js;
+        document.getElementById('code-fields').textContent = fields;
+        document.getElementById('code-data').textContent = data;
+      } catch (err) {
+        console.error('Error loading code:', err);
+      }
+    }
+
+    loadCode();
+  </script>
+</body>
+</html>

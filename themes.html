@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kawaii Notes Goal - Theme Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Patrick+Hand&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #fff5f7 0%, #fef6e8 50%, #f0f8ff 100%);
+      min-height: 100vh;
+      color: #4a4a6a;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ff69b4, #a8e6cf, #c9b1ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      margin: 40px 0 20px 0;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #ffb7c5;
+      color: #4a4a6a;
+    }
+
+    .section-title span {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+
+    .settings-panel {
+      background: #fffef5;
+      border: 2px solid #4a4a6a;
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      position: relative;
+    }
+
+    .settings-panel::before, .settings-panel::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 2px solid #4a4a6a;
+      background: #ffb7c5;
+      border-radius: 2px;
+    }
+
+    .settings-panel::before {
+      top: -5px;
+      left: -5px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .settings-panel::after {
+      top: -5px;
+      right: -5px;
+      border-left: none;
+      border-bottom: none;
+    }
+
+    .settings-panel h3 {
+      width: 100%;
+      font-size: 0.9rem;
+      color: #ff69b4;
+      margin-bottom: 5px;
+    }
+
+    .setting-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .setting-group label {
+      font-size: 0.75rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .setting-group select {
+      background: #fff;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      color: #4a4a6a;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      min-width: 160px;
+    }
+
+    .setting-group select:focus {
+      outline: none;
+      border-color: #ff69b4;
+    }
+
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    .theme-card {
+      background: #fff;
+      border: 2px solid #e0e0e0;
+      border-radius: 16px;
+      padding: 25px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .theme-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .theme-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #4a4a6a;
+    }
+
+    .theme-vibe {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 15px;
+    }
+
+    /* Base Widget Preview Styles */
+    .widget-preview {
+      position: relative;
+      background: #fffef5;
+      border: 3px solid #4a4a6a;
+      border-radius: 8px;
+      padding: 15px 18px;
+      font-family: 'Nunito', sans-serif;
+      box-shadow: 4px 4px 0px rgba(74, 74, 106, 0.15);
+      min-height: 90px;
+    }
+
+    .corner {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 2px solid #4a4a6a;
+      background: #fff;
+      border-radius: 2px;
+    }
+
+    .corner-tl { top: -5px; left: -5px; border-right: none; border-bottom: none; }
+    .corner-tr { top: -5px; right: -5px; border-left: none; border-bottom: none; }
+
+    .preview-icon {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      font-size: 22px;
+    }
+
+    .preview-title {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #4a4a6a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      padding-left: 25px;
+    }
+
+    .preview-bar {
+      width: 100%;
+      height: 16px;
+      background: #f0f0f0;
+      border: 2px solid #4a4a6a;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .preview-bar-fill {
+      height: 100%;
+      width: 65%;
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+
+    .preview-values {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #4a4a6a;
+    }
+
+    .preview-separator { opacity: 0.5; }
+
+    .effects-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .demo-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .demo-btn {
+      padding: 6px 12px;
+      background: rgba(168, 230, 207, 0.3);
+      border: 2px solid #a8e6cf;
+      border-radius: 6px;
+      color: #4a8a6a;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .demo-btn:hover { background: rgba(168, 230, 207, 0.5); }
+
+    .demo-btn.reset {
+      background: rgba(255, 183, 197, 0.3);
+      border-color: #ffb7c5;
+      color: #c45a7a;
+    }
+
+    .demo-btn.reset:hover { background: rgba(255, 183, 197, 0.5); }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #888;
+      text-decoration: none;
+      margin-bottom: 30px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: #ff69b4; }
+
+    /* Animations */
+    @keyframes kawaii-heart-float {
+      0% { transform: translateY(0) scale(0); opacity: 0; }
+      20% { transform: translateY(-10px) scale(1.2); opacity: 1; }
+      100% { transform: translateY(-80px) scale(0.8) rotate(15deg); opacity: 0; }
+    }
+
+    @keyframes kawaii-star-spin {
+      0% { transform: scale(0) rotate(0deg); opacity: 0; }
+      30% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+      100% { transform: scale(0) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes kawaii-confetti {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100px) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes kawaii-sparkle {
+      0%, 100% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes kawaii-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes holo-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .kawaii-bounce { animation: kawaii-bounce 0.4s ease; }
+
+    /* ============= COLOR THEMES ============= */
+    .theme-mint .preview-bar-fill { background: #a8e6cf; }
+    .theme-mint .corner { background: #e8f8f0; }
+
+    .theme-pink .preview-bar-fill { background: #ffb7c5; }
+    .theme-pink .corner { background: #fff0f3; }
+
+    .theme-yellow .preview-bar-fill { background: #ffeaa7; }
+    .theme-yellow .corner { background: #fffef0; }
+
+    .theme-lavender .preview-bar-fill { background: #c9b1ff; }
+    .theme-lavender .corner { background: #f5f0ff; }
+
+    .theme-peach .preview-bar-fill { background: #ffd4a3; }
+    .theme-peach .corner { background: #fff8f0; }
+
+    .theme-sky .preview-bar-fill { background: #a3d5ff; }
+    .theme-sky .corner { background: #f0f8ff; }
+
+    .theme-coral .preview-bar-fill { background: #ff9a9e; }
+    .theme-coral .corner { background: #fff5f5; }
+
+    .theme-lilac .preview-bar-fill { background: #d4a5ff; }
+    .theme-lilac .corner { background: #f8f0ff; }
+
+    .theme-seafoam .preview-bar-fill { background: #88d8c0; }
+    .theme-seafoam .corner { background: #e5f8f2; }
+
+    .theme-blush .preview-bar-fill { background: #f8b4c4; }
+    .theme-blush .corner { background: #fef0f3; }
+
+    .theme-butter .preview-bar-fill { background: #fff3b0; }
+    .theme-butter .corner { background: #fffcf0; }
+
+    .theme-periwinkle .preview-bar-fill { background: #a0c4ff; }
+    .theme-periwinkle .corner { background: #f0f5ff; }
+
+    .theme-honeydew .preview-bar-fill { background: #c1ffc1; }
+    .theme-honeydew .corner { background: #f0fff0; }
+
+    .theme-rose .preview-bar-fill { background: #ffcccc; }
+    .theme-rose .corner { background: #fff5f5; }
+
+    .theme-apricot .preview-bar-fill { background: #ffcba4; }
+    .theme-apricot .corner { background: #fff8f0; }
+
+    .theme-aqua .preview-bar-fill { background: #7fdbda; }
+    .theme-aqua .corner { background: #e8f8f8; }
+
+    .theme-cotton .preview-bar-fill { background: linear-gradient(90deg, #ffb7c5, #a3d5ff); }
+    .theme-cotton .corner { background: #fff0f8; }
+
+    .theme-matcha .preview-bar-fill { background: #b8d4a8; }
+    .theme-matcha .corner { background: #f0f5e8; }
+
+    .theme-strawberry .preview-bar-fill { background: #ff8a9b; }
+    .theme-strawberry .corner { background: #fff0f2; }
+
+    .theme-vanilla .preview-bar-fill { background: #f5e6c8; }
+    .theme-vanilla .corner { background: #fdfaf0; }
+
+    .theme-bubblegum .preview-bar-fill { background: #ff99cc; }
+    .theme-bubblegum .corner { background: #fff0f8; }
+
+    .theme-cloud .preview-bar-fill { background: #e8e8ff; }
+    .theme-cloud .corner { background: #f8f8ff; }
+
+    .theme-fairy .preview-bar-fill { background: linear-gradient(90deg, #ffd1ff, #c9b1ff); }
+    .theme-fairy .corner { background: #fef0ff; }
+
+    .theme-mochi .preview-bar-fill { background: #f5e1da; }
+    .theme-mochi .corner { background: #fdf8f5; }
+
+    .theme-boba .preview-bar-fill { background: #d4a574; }
+    .theme-boba .corner { background: #f8f0e8; }
+    .theme-boba .widget-preview { background: #fef6e8; }
+
+    .theme-unicorn .preview-bar-fill { background: linear-gradient(90deg, #ff9a9e, #ffeaa7, #a8e6cf, #a3d5ff, #c9b1ff); }
+    .theme-unicorn .corner { background: #fff0f5; }
+
+    .theme-pastel-rainbow .preview-bar-fill { background: linear-gradient(90deg, #ffb7c5, #ffd4a3, #ffeaa7, #a8e6cf, #a3d5ff, #c9b1ff); }
+    .theme-pastel-rainbow .corner { background: #fff8f8; }
+
+    .theme-cherry .preview-bar-fill { background: #ffb7c5; }
+    .theme-cherry .corner { background: #fff0f3; }
+    .theme-cherry .widget-preview { background: #fff8fa; }
+
+    .theme-melon .preview-bar-fill { background: #98fb98; }
+    .theme-melon .corner { background: #f0fff0; }
+
+    .theme-grape .preview-bar-fill { background: #b19cd9; }
+    .theme-grape .corner { background: #f5f0ff; }
+
+    /* ============= STYLE THEMES ============= */
+
+    /* Notebook */
+    .theme-notebook .widget-preview {
+      background: #fff linear-gradient(transparent 95%, #e0e0e0 95%);
+      background-size: 100% 24px;
+      border-color: #8b7355;
+      border-left: 4px solid #ff6b6b;
+      border-radius: 0;
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
+    }
+    .theme-notebook .corner { display: none; }
+    .theme-notebook .preview-bar-fill { background: #7cb9e8; }
+    .theme-notebook .preview-bar { border-color: #5a4a3a; }
+    .theme-notebook .preview-title, .theme-notebook .preview-values { color: #5a4a3a; }
+
+    /* Grid */
+    .theme-grid .widget-preview {
+      background: #f8f8ff;
+      background-image: linear-gradient(#a8d4ff 1px, transparent 1px), linear-gradient(90deg, #a8d4ff 1px, transparent 1px);
+      background-size: 20px 20px;
+      border-color: #6a8caf;
+      border-radius: 4px;
+    }
+    .theme-grid .corner { background: #d0e8ff; border-color: #6a8caf; }
+    .theme-grid .preview-bar-fill { background: #ff9ecd; }
+    .theme-grid .preview-bar { border-color: #6a8caf; background: #e8f4ff; }
+
+    /* Washi Tape */
+    .theme-washi .widget-preview {
+      background: #fffef5;
+      border: none;
+      border-radius: 0;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .theme-washi .widget-preview::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 20%;
+      width: 60%;
+      height: 20px;
+      background: repeating-linear-gradient(45deg, #ffb7c5, #ffb7c5 10px, #ffd4e5 10px, #ffd4e5 20px);
+      opacity: 0.9;
+      transform: rotate(-1deg);
+    }
+    .theme-washi .corner { display: none; }
+    .theme-washi .preview-bar-fill { background: linear-gradient(90deg, #ffc3a0, #ffafbd); }
+    .theme-washi .preview-bar { border-color: #d4a5a5; }
+
+    /* Chalkboard */
+    .theme-chalkboard .widget-preview {
+      background: #2d4a3e;
+      border: 8px solid #8b7355;
+      border-radius: 4px;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.3), 3px 3px 10px rgba(0,0,0,0.3);
+    }
+    .theme-chalkboard .corner { display: none; }
+    .theme-chalkboard .preview-bar-fill { background: #fff; opacity: 0.9; }
+    .theme-chalkboard .preview-bar { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); }
+    .theme-chalkboard .preview-title, .theme-chalkboard .preview-values {
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      font-family: 'Patrick Hand', cursive;
+    }
+
+    /* Polaroid */
+    .theme-polaroid .widget-preview {
+      background: #fff;
+      border: none;
+      border-radius: 0;
+      padding: 15px 15px 40px 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .theme-polaroid .widget-preview::after {
+      content: '♡ goal ♡';
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 14px;
+      color: #666;
+    }
+    .theme-polaroid .corner { display: none; }
+    .theme-polaroid .preview-bar-fill { background: linear-gradient(90deg, #a8e6cf, #88d8b0); }
+    .theme-polaroid .preview-title { display: none; }
+
+    /* Ticket */
+    .theme-ticket .widget-preview {
+      background: linear-gradient(90deg, #ffe4e1 0%, #fff0f5 50%, #ffe4e1 100%);
+      border: 2px dashed #ff69b4;
+      border-radius: 12px;
+    }
+    .theme-ticket .corner { display: none; }
+    .theme-ticket .preview-bar-fill { background: #ff69b4; }
+
+    /* Craft Paper */
+    .theme-craft .widget-preview {
+      background: #d4a574;
+      border: none;
+      border-radius: 0;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    }
+    .theme-craft .corner { display: none; }
+    .theme-craft .preview-bar-fill { background: #fff5e6; }
+    .theme-craft .preview-bar { border-color: #8b6914; background: #c49a6c; }
+    .theme-craft .preview-title, .theme-craft .preview-values { color: #5a3e1b; }
+
+    /* Sticker */
+    .theme-sticker .widget-preview {
+      background: linear-gradient(135deg, #fff0f5, #f0f8ff);
+      border: 6px solid #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15), 0 0 0 2px #ffb7c5;
+    }
+    .theme-sticker .corner { display: none; }
+    .theme-sticker .preview-bar-fill { background: linear-gradient(90deg, #ff9a9e, #fecfef); }
+    .theme-sticker .preview-bar { border-color: #ffb7c5; border-radius: 15px; }
+
+    /* Gingham */
+    .theme-gingham .widget-preview {
+      background:
+        linear-gradient(45deg, #ffccd5 25%, transparent 25%),
+        linear-gradient(-45deg, #ffccd5 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ffccd5 75%),
+        linear-gradient(-45deg, transparent 75%, #ffccd5 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      background-color: #fff5f7;
+      border-color: #e57373;
+    }
+    .theme-gingham .corner { background: #fff; border-color: #e57373; }
+    .theme-gingham .preview-bar-fill { background: #e57373; }
+    .theme-gingham .preview-bar { background: #fff; }
+
+    /* Polka Dots */
+    .theme-polka .widget-preview {
+      background: #fff0f5;
+      background-image: radial-gradient(#ffb7c5 8px, transparent 8px);
+      background-size: 30px 30px;
+      border-color: #ff69b4;
+    }
+    .theme-polka .corner { background: #fff; border-color: #ff69b4; border-radius: 50%; }
+    .theme-polka .preview-bar-fill { background: #ff69b4; }
+
+    /* Starry */
+    .theme-starry .widget-preview {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-color: #ffd700;
+      box-shadow: 0 0 20px rgba(255,215,0,0.3);
+    }
+    .theme-starry .corner { background: #ffd700; border-color: #ffd700; }
+    .theme-starry .preview-bar-fill { background: linear-gradient(90deg, #ffd700, #ffec8b); }
+    .theme-starry .preview-bar { border-color: #ffd700; background: rgba(255,255,255,0.1); }
+    .theme-starry .preview-title, .theme-starry .preview-values { color: #ffd700; }
+
+    /* Hearts */
+    .theme-hearts .widget-preview {
+      background: #fff5f7;
+      border-color: #ff6b8a;
+    }
+    .theme-hearts .corner {
+      background: #ff6b8a;
+      border: none;
+      border-radius: 50% 50% 0 50%;
+      transform: rotate(-45deg);
+    }
+    .theme-hearts .corner-tr { transform: rotate(45deg); }
+    .theme-hearts .preview-bar-fill { background: linear-gradient(90deg, #ff6b8a, #ff8fab); }
+
+    /* Clouds */
+    .theme-clouds .widget-preview {
+      background: linear-gradient(180deg, #e0f4ff, #f0f8ff);
+      border: none;
+      border-radius: 30px 30px 20px 20px;
+      box-shadow: 30px 10px 0 -10px #fff, -30px 10px 0 -10px #fff, 0 15px 20px rgba(0,0,0,0.1);
+    }
+    .theme-clouds .corner { display: none; }
+    .theme-clouds .preview-bar-fill { background: #87ceeb; }
+    .theme-clouds .preview-bar { border-color: #87ceeb; background: #fff; }
+    .theme-clouds .preview-title, .theme-clouds .preview-values { color: #5a8faf; }
+
+    /* Sprinkles */
+    .theme-sprinkles .widget-preview {
+      background: #ffb7c5;
+      border: 4px solid #fff;
+      border-radius: 16px;
+      box-shadow: 3px 3px 0 #d4788a;
+    }
+    .theme-sprinkles .corner { display: none; }
+    .theme-sprinkles .preview-bar-fill { background: #fff; }
+    .theme-sprinkles .preview-bar { border-color: #fff; background: rgba(255,255,255,0.5); }
+    .theme-sprinkles .preview-title, .theme-sprinkles .preview-values { color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+
+    /* Marble */
+    .theme-marble .widget-preview {
+      background: linear-gradient(135deg, #f5f5f5, #e8e8e8, #f0f0f0, #e0e0e0);
+      border-color: #c0a080;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .theme-marble .corner { background: #c0a080; border-color: #a08060; }
+    .theme-marble .preview-bar-fill { background: linear-gradient(90deg, #c0a080, #d4b896); }
+
+    /* Holographic */
+    .theme-holo .widget-preview {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a8edea, #fed6e3, #d299c2);
+      background-size: 300% 300%;
+      animation: holo-shift 5s ease infinite;
+      border: 2px solid rgba(255,255,255,0.5);
+      box-shadow: 0 0 20px rgba(255,182,193,0.4);
+    }
+    .theme-holo .corner { background: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.5); }
+    .theme-holo .preview-bar-fill { background: linear-gradient(90deg, #fff, rgba(255,255,255,0.8)); }
+    .theme-holo .preview-bar { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.3); }
+    .theme-holo .preview-title, .theme-holo .preview-values { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
+
+    /* Neon */
+    .theme-neon .widget-preview {
+      background: #1a1a2e;
+      border: 3px solid #ff00ff;
+      box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, inset 0 0 15px rgba(255,0,255,0.1);
+      border-radius: 12px;
+    }
+    .theme-neon .corner {
+      background: transparent;
+      border-color: #00ffff;
+      box-shadow: 0 0 5px #00ffff;
+    }
+    .theme-neon .preview-bar-fill {
+      background: linear-gradient(90deg, #ff00ff, #00ffff);
+      box-shadow: 0 0 10px #ff00ff;
+    }
+    .theme-neon .preview-bar { border-color: #00ffff; background: rgba(0,255,255,0.1); }
+    .theme-neon .preview-title, .theme-neon .preview-values {
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    }
+
+    /* Denim */
+    .theme-denim .widget-preview {
+      background: #4a6fa5;
+      border: none;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 2px 2px 8px rgba(0,0,0,0.2);
+    }
+    .theme-denim .corner { display: none; }
+    .theme-denim .preview-bar-fill { background: #ffd700; }
+    .theme-denim .preview-bar { border: 2px solid #fff; background: rgba(255,255,255,0.2); }
+    .theme-denim .preview-title, .theme-denim .preview-values { color: #fff; }
+
+    /* Lace */
+    .theme-lace .widget-preview {
+      background: #fff;
+      border: 8px solid transparent;
+      border-image: repeating-linear-gradient(45deg, #ffb7c5, #ffb7c5 5px, transparent 5px, transparent 10px) 8;
+      box-shadow: 0 0 0 2px #ffb7c5;
+    }
+    .theme-lace .corner { display: none; }
+    .theme-lace .preview-bar-fill { background: #ffb7c5; }
+
+    /* Ribbon */
+    .theme-ribbon .widget-preview {
+      background: #fff5f7;
+      border: 2px solid #ff69b4;
+      border-radius: 8px;
+      padding-top: 25px;
+    }
+    .theme-ribbon .widget-preview::before {
+      content: '🎀';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+    }
+    .theme-ribbon .corner { display: none; }
+    .theme-ribbon .preview-bar-fill { background: linear-gradient(90deg, #ff69b4, #ff8dc7); }
+
+    /* Letter */
+    .theme-letter .widget-preview {
+      background: linear-gradient(135deg, #f5f0e8 0%, #fff8f0 100%);
+      border: 2px solid #c9a66b;
+      border-radius: 0;
+      clip-path: polygon(0 15%, 50% 0, 100% 15%, 100% 100%, 0 100%);
+      padding-top: 30px;
+    }
+    .theme-letter .corner { display: none; }
+    .theme-letter .preview-bar-fill { background: #c9a66b; }
+    .theme-letter .preview-bar { border-color: #c9a66b; }
+    .theme-letter .preview-title, .theme-letter .preview-values { color: #8b7355; }
+
+    /* Stamp */
+    .theme-stamp .widget-preview {
+      background: #fff;
+      border: none;
+      box-shadow: 0 0 0 8px #fff, 0 0 0 10px #e0e0e0;
+      border-radius: 0;
+      margin: 12px;
+    }
+    .theme-stamp .corner { display: none; }
+    .theme-stamp .preview-bar-fill { background: #e74c3c; }
+    .theme-stamp .preview-bar { border-color: #c0392b; }
+
+    /* Watercolor */
+    .theme-watercolor .widget-preview {
+      background: linear-gradient(135deg, rgba(255,183,197,0.6), rgba(168,230,207,0.5), rgba(163,213,255,0.6), rgba(201,177,255,0.5));
+      border: none;
+      border-radius: 50% 20% 40% 30% / 30% 40% 20% 50%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .theme-watercolor .corner { display: none; }
+    .theme-watercolor .preview-bar-fill { background: linear-gradient(90deg, #ff9ecd, #a8e6cf, #a3d5ff); }
+    .theme-watercolor .preview-bar { border: 2px solid rgba(90,74,106,0.3); background: rgba(255,255,255,0.6); border-radius: 15px; }
+    .theme-watercolor .preview-title, .theme-watercolor .preview-values { color: #5a4a6a; }
+
+    /* Pixel Art */
+    .theme-pixel .widget-preview {
+      background: #2a2a4a;
+      border: 4px solid #00ff88;
+      border-radius: 0;
+      box-shadow: 4px 4px 0 #00aa55, 8px 8px 0 rgba(0,0,0,0.2);
+    }
+    .theme-pixel .corner {
+      background: #00ff88;
+      border: none;
+      border-radius: 0;
+      width: 8px;
+      height: 8px;
+    }
+    .theme-pixel .preview-bar-fill { background: #00ff88; }
+    .theme-pixel .preview-bar { border: 2px solid #00ff88; background: #1a1a3a; border-radius: 0; }
+    .theme-pixel .preview-title, .theme-pixel .preview-values {
+      color: #00ff88;
+      font-family: monospace;
+      text-shadow: 2px 2px 0 #00aa55;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/streamelements/widget/kawaii-notes-goal/" class="back-link">← Back to Widget</a>
+
+    <h1>Theme Preview</h1>
+    <p class="subtitle">54 unique kawaii themes - 30 color themes + 24 style themes</p>
+
+    <div class="settings-panel">
+      <h3>Preview Settings</h3>
+
+      <div class="setting-group">
+        <label>Celebration Effect</label>
+        <select id="celebrationEffect">
+          <option value="hearts">Floating Hearts</option>
+          <option value="stars">Spinning Stars</option>
+          <option value="confetti">Pastel Confetti</option>
+          <option value="sparkles">Sparkle Burst</option>
+          <option value="flowers">Flower Shower</option>
+          <option value="rainbow">Rainbow Magic</option>
+          <option value="bubbles">Cute Bubbles</option>
+          <option value="butterflies">Butterflies</option>
+          <option value="clouds">Fluffy Clouds</option>
+          <option value="candies">Candy Rain</option>
+          <option value="bunnies">Bouncing Bunnies</option>
+          <option value="cats">Kitty Parade</option>
+          <option value="mochi">Mochi Bounce</option>
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label>When Goal Exceeded</label>
+        <select id="overflowBehavior">
+          <option value="show">Show overflow (175/100)</option>
+          <option value="cap">Cap at goal (100/100)</option>
+          <option value="hide">Hide after completion</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- COLOR THEMES -->
+    <h2 class="section-title"><span>🎨</span> Color Themes (30)</h2>
+    <div class="themes-grid" id="colorThemesGrid"></div>
+
+    <!-- STYLE THEMES -->
+    <h2 class="section-title"><span>✨</span> Style Themes (24)</h2>
+    <div class="themes-grid" id="styleThemesGrid"></div>
+  </div>
+
+  <script>
+    // Color themes
+    const colorThemes = [
+      { id: 'mint', name: '🌿 Mint Fresh', vibe: 'Cool and refreshing' },
+      { id: 'pink', name: '🌸 Sakura Pink', vibe: 'Cherry blossom dreams' },
+      { id: 'yellow', name: '🌻 Sunny Lemon', vibe: 'Bright and cheerful' },
+      { id: 'lavender', name: '💜 Lavender Dream', vibe: 'Calm and magical' },
+      { id: 'peach', name: '🍑 Peachy Keen', vibe: 'Warm and cozy' },
+      { id: 'sky', name: '☁️ Sky Blue', vibe: 'Light and airy' },
+      { id: 'coral', name: '🪸 Coral Reef', vibe: 'Ocean sunset vibes' },
+      { id: 'lilac', name: '🪻 Lilac Mist', vibe: 'Soft purple haze' },
+      { id: 'seafoam', name: '🌊 Seafoam', vibe: 'Beach day energy' },
+      { id: 'blush', name: '🌷 Rosy Blush', vibe: 'Sweet and gentle' },
+      { id: 'butter', name: '🧈 Buttercream', vibe: 'Smooth and creamy' },
+      { id: 'periwinkle', name: '💙 Periwinkle', vibe: 'Dreamy twilight' },
+      { id: 'honeydew', name: '🍈 Honeydew', vibe: 'Fresh melon vibes' },
+      { id: 'rose', name: '🌹 Rose Quartz', vibe: 'Crystal healing' },
+      { id: 'apricot', name: '🍊 Apricot', vibe: 'Fruity sweetness' },
+      { id: 'aqua', name: '💎 Aqua Marine', vibe: 'Under the sea' },
+      { id: 'cotton', name: '🍭 Cotton Candy', vibe: 'Carnival dreams' },
+      { id: 'matcha', name: '🍵 Matcha Latte', vibe: 'Cozy cafe vibes' },
+      { id: 'strawberry', name: '🍓 Strawberry Milk', vibe: 'Sweet and pink' },
+      { id: 'vanilla', name: '🍦 Vanilla Bean', vibe: 'Creamy and soft' },
+      { id: 'bubblegum', name: '🎀 Bubblegum Pop', vibe: 'Fun and bouncy' },
+      { id: 'cloud', name: '✨ Cloud Nine', vibe: 'Fluffy and light' },
+      { id: 'fairy', name: '🧚 Fairy Dust', vibe: 'Magical sparkles' },
+      { id: 'mochi', name: '🍡 Mochi', vibe: 'Soft and squishy' },
+      { id: 'boba', name: '🧋 Boba Tea', vibe: 'Bubble tea vibes' },
+      { id: 'unicorn', name: '🦄 Unicorn Magic', vibe: 'Rainbow dreams' },
+      { id: 'pastel-rainbow', name: '🌈 Pastel Rainbow', vibe: 'All the colors' },
+      { id: 'cherry', name: '🌸 Cherry Blossom', vibe: 'Spring in Japan' },
+      { id: 'melon', name: '🍈 Melon Soda', vibe: 'Fizzy and fresh' },
+      { id: 'grape', name: '🍇 Grape Candy', vibe: 'Sweet purple treat' }
+    ];
+
+    // Style themes
+    const styleThemes = [
+      { id: 'notebook', name: '📓 Notebook Paper', vibe: 'School vibes with lined paper' },
+      { id: 'grid', name: '📐 Grid Paper', vibe: 'Graph paper math aesthetic' },
+      { id: 'washi', name: '🎨 Washi Tape', vibe: 'Decorative tape on top' },
+      { id: 'chalkboard', name: '🖍️ Chalkboard', vibe: 'Dark board with chalk text' },
+      { id: 'polaroid', name: '📷 Polaroid', vibe: 'Vintage photo style' },
+      { id: 'ticket', name: '🎫 Ticket Stub', vibe: 'Admission ticket with dashed border' },
+      { id: 'craft', name: '📦 Craft Paper', vibe: 'Brown kraft paper packaging' },
+      { id: 'sticker', name: '🏷️ Sticker', vibe: 'Die-cut sticker with shadow' },
+      { id: 'gingham', name: '🧺 Gingham Check', vibe: 'Picnic tablecloth pattern' },
+      { id: 'polka', name: '⚫ Polka Dots', vibe: 'Classic dot pattern' },
+      { id: 'starry', name: '⭐ Starry Night', vibe: 'Dark sky with golden stars' },
+      { id: 'hearts', name: '💕 Heart Pattern', vibe: 'Love themed with heart corners' },
+      { id: 'clouds', name: '☁️ Fluffy Cloud', vibe: 'Cloud-shaped with soft edges' },
+      { id: 'sprinkles', name: '🍩 Sprinkles', vibe: 'Donut-inspired with sprinkles' },
+      { id: 'marble', name: '🪨 Marble', vibe: 'Elegant stone texture' },
+      { id: 'holo', name: '✨ Holographic', vibe: 'Iridescent shifting colors' },
+      { id: 'neon', name: '💡 Neon Glow', vibe: 'Bright neon on dark' },
+      { id: 'denim', name: '👖 Denim Patch', vibe: 'Jean fabric with stitching' },
+      { id: 'lace', name: '🧵 Lace Border', vibe: 'Delicate lace trim' },
+      { id: 'ribbon', name: '🎀 Ribbon Bow', vibe: 'Pretty bow decoration' },
+      { id: 'letter', name: '✉️ Love Letter', vibe: 'Envelope shape' },
+      { id: 'stamp', name: '📮 Postage Stamp', vibe: 'Perforated stamp edges' },
+      { id: 'watercolor', name: '🎨 Watercolor', vibe: 'Soft painted edges' },
+      { id: 'pixel', name: '👾 Pixel Art', vibe: 'Retro game style' }
+    ];
+
+    const cardStates = new Map();
+
+    function getCardState(card) {
+      if (!cardStates.has(card)) {
+        cardStates.set(card, { progress: 65, goal: 100, wasComplete: false });
+      }
+      return cardStates.get(card);
+    }
+
+    function getRandomIcon() {
+      const icons = ['⭐', '💖', '✨', '🌸', '🦋', '🎀', '🧁', '🍭', '🐰', '🦄'];
+      return icons[Math.floor(Math.random() * icons.length)];
+    }
+
+    function generateThemeCard(theme, container) {
+      const card = document.createElement('div');
+      card.className = 'theme-card';
+      card.innerHTML = `
+        <div class="theme-name">${theme.name}</div>
+        <div class="theme-vibe">${theme.vibe}</div>
+        <div class="widget-preview theme-${theme.id}">
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="preview-icon">${getRandomIcon()}</div>
+          <div class="preview-title">GOAL</div>
+          <div class="preview-bar">
+            <div class="preview-bar-fill"></div>
+          </div>
+          <div class="preview-values">
+            <span class="current-val">65</span>
+            <span class="preview-separator">|</span>
+            <span class="goal-val">100</span>
+          </div>
+          <div class="effects-container"></div>
+        </div>
+        <div class="demo-controls">
+          <button class="demo-btn" onclick="demoAdd(this, 10)">+10</button>
+          <button class="demo-btn" onclick="demoAdd(this, 35)">+35</button>
+          <button class="demo-btn" onclick="demoAdd(this, 50)">+50</button>
+          <button class="demo-btn reset" onclick="demoReset(this)">Reset</button>
+        </div>
+      `;
+      container.appendChild(card);
+    }
+
+    function generateThemes() {
+      const colorGrid = document.getElementById('colorThemesGrid');
+      const styleGrid = document.getElementById('styleThemesGrid');
+
+      colorThemes.forEach(theme => generateThemeCard(theme, colorGrid));
+      styleThemes.forEach(theme => generateThemeCard(theme, styleGrid));
+    }
+
+    function demoAdd(btn, amount) {
+      const card = btn.closest('.theme-card');
+      const state = getCardState(card);
+      const preview = card.querySelector('.widget-preview');
+
+      state.progress += amount;
+      preview.classList.add('kawaii-bounce');
+      setTimeout(() => preview.classList.remove('kawaii-bounce'), 400);
+      updateCardDisplay(card, state);
+    }
+
+    function demoReset(btn) {
+      const card = btn.closest('.theme-card');
+      const state = getCardState(card);
+      state.progress = 0;
+      state.wasComplete = false;
+
+      const preview = card.querySelector('.widget-preview');
+      preview.style.opacity = '1';
+      clearEffects(preview);
+      updateCardDisplay(card, state);
+    }
+
+    function updateCardDisplay(card, state) {
+      const fill = card.querySelector('.preview-bar-fill');
+      const currentVal = card.querySelector('.current-val');
+      const preview = card.querySelector('.widget-preview');
+
+      const overflowBehavior = document.getElementById('overflowBehavior').value;
+      const pct = Math.min((state.progress / state.goal) * 100, 100);
+      fill.style.width = pct + '%';
+
+      let displayValue = state.progress;
+      const isComplete = state.progress >= state.goal;
+
+      if (isComplete && overflowBehavior === 'cap') displayValue = state.goal;
+      currentVal.textContent = displayValue;
+
+      if (!isComplete) preview.style.opacity = '1';
+
+      if (isComplete && !state.wasComplete) {
+        state.wasComplete = true;
+        setTimeout(() => celebrate(preview), 500);
+
+        if (overflowBehavior === 'hide') {
+          setTimeout(() => {
+            preview.style.opacity = '0';
+            preview.style.transition = 'opacity 0.5s ease';
+          }, 3500);
+        }
+      }
+    }
+
+    function clearEffects(preview) {
+      const box = preview.querySelector('.effects-container');
+      if (box) box.innerHTML = '';
+    }
+
+    function celebrate(preview) {
+      const effect = document.getElementById('celebrationEffect').value;
+      const box = preview.querySelector('.effects-container');
+      box.innerHTML = '';
+
+      const effects = {
+        hearts: () => spawnParticles(box, ['💖', '💕', '💗', '💓'], 6, 6, 'float'),
+        stars: () => spawnParticles(box, ['⭐', '🌟', '✨', '💫'], 8, 8, 'spin'),
+        confetti: () => spawnConfetti(box),
+        sparkles: () => spawnParticles(box, ['✨', '💫', '⭐'], 8, 6, 'sparkle'),
+        flowers: () => spawnParticles(box, ['🌸', '🌺', '🌷', '🌼'], 6, 8, 'fall'),
+        rainbow: () => spawnParticles(box, ['🌈', '✨', '💖', '⭐'], 5, 5, 'float'),
+        bubbles: () => spawnParticles(box, ['🫧', '○', '◯'], 6, 8, 'float'),
+        butterflies: () => spawnParticles(box, ['🦋', '🦋', '✨'], 5, 5, 'float'),
+        clouds: () => spawnParticles(box, ['☁️', '💭', '🤍'], 4, 4, 'float'),
+        candies: () => spawnParticles(box, ['🍬', '🍭', '🧁', '🍩'], 6, 8, 'fall'),
+        bunnies: () => spawnParticles(box, ['🐰', '🐇', '🥕', '💕'], 5, 5, 'float'),
+        cats: () => spawnParticles(box, ['🐱', '😺', '😸', '🐾'], 5, 5, 'float'),
+        mochi: () => spawnParticles(box, ['🍡', '🍥', '🥮', '✨'], 6, 6, 'spin')
+      };
+
+      if (effects[effect]) effects[effect]();
+    }
+
+    function spawnParticles(box, items, waves, count, animation) {
+      for (let w = 0; w < waves; w++) {
+        setTimeout(() => {
+          for (let i = 0; i < count; i++) {
+            const p = document.createElement('div');
+            p.textContent = items[Math.floor(Math.random() * items.length)];
+            const size = 14 + Math.random() * 14;
+            let anim = '';
+
+            if (animation === 'float') {
+              anim = `kawaii-heart-float ${1 + Math.random() * 0.5}s ease-out forwards`;
+              p.style.cssText = `position:absolute;left:${10+Math.random()*80}%;top:50%;font-size:${size}px;animation:${anim};animation-delay:${Math.random()*0.3}s;pointer-events:none;`;
+            } else if (animation === 'spin') {
+              anim = `kawaii-star-spin ${0.8 + Math.random() * 0.4}s ease forwards`;
+              p.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;font-size:${size}px;animation:${anim};animation-delay:${Math.random()*0.3}s;pointer-events:none;`;
+            } else if (animation === 'fall') {
+              anim = `kawaii-confetti ${1.2 + Math.random() * 0.6}s ease forwards`;
+              p.style.cssText = `position:absolute;left:${Math.random()*100}%;top:-10px;font-size:${size}px;animation:${anim};animation-delay:${Math.random()*0.4}s;pointer-events:none;`;
+            } else if (animation === 'sparkle') {
+              anim = `kawaii-sparkle ${0.6 + Math.random() * 0.4}s ease forwards`;
+              p.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;font-size:${size}px;animation:${anim};animation-delay:${Math.random()*0.2}s;pointer-events:none;`;
+            }
+
+            box.appendChild(p);
+            setTimeout(() => p.remove(), 2500);
+          }
+        }, w * 400);
+      }
+    }
+
+    function spawnConfetti(box) {
+      const colors = ['#ffb7c5', '#a8e6cf', '#ffeaa7', '#c9b1ff', '#a3d5ff'];
+      for (let w = 0; w < 5; w++) {
+        setTimeout(() => {
+          for (let i = 0; i < 12; i++) {
+            const p = document.createElement('div');
+            const size = 6 + Math.random() * 6;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            p.style.cssText = `position:absolute;left:${Math.random()*100}%;top:-10px;width:${size}px;height:${size}px;background:${color};border-radius:${Math.random()>0.5?'50%':'2px'};animation:kawaii-confetti ${1+Math.random()*0.8}s ease forwards;animation-delay:${Math.random()*0.4}s;pointer-events:none;`;
+            box.appendChild(p);
+            setTimeout(() => p.remove(), 2500);
+          }
+        }, w * 500);
+      }
+    }
+
+    generateThemes();
+  </script>
+</body>
+</html>
