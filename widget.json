@@ -72,7 +72,23 @@
       "top": "⬆️ Above (center)",
       "top-left": "↖️ Above (left)",
       "top-right": "↗️ Above (right)",
+      "bottom": "⬇️ Below (center)",
+      "bottom-left": "↙️ Below (left)",
+      "bottom-right": "↘️ Below (right)",
+      "left": "⬅️ Left of bar",
+      "right": "➡️ Right of bar",
       "hidden": "🚫 Hidden"
+    },
+    "group": "📝 Title & Text"
+  },
+  "titleAlign": {
+    "type": "dropdown",
+    "label": "Title Align To (when above/below)",
+    "value": "bar",
+    "options": {
+      "row": "🎯 Bar + Icon row",
+      "bar": "📊 Bar only",
+      "widget": "📦 Whole widget"
     },
     "group": "📝 Title & Text"
   },
@@ -84,8 +100,26 @@
       "below": "⬇️ Below (center)",
       "below-left": "↙️ Below (left)",
       "below-right": "↘️ Below (right)",
-      "inside": "⏺️ Inside bar",
+      "above": "⬆️ Above (center)",
+      "above-left": "↖️ Above (left)",
+      "above-right": "↗️ Above (right)",
+      "inside-left": "⬅️ Inside bar (left)",
+      "inside-center": "⏺️ Inside bar (center)",
+      "inside-right": "➡️ Inside bar (right)",
+      "left": "◀️ Left of bar",
+      "right": "▶️ Right of bar",
       "hidden": "🚫 Hidden"
+    },
+    "group": "📝 Title & Text"
+  },
+  "valuesAlign": {
+    "type": "dropdown",
+    "label": "Values Align To (when above/below)",
+    "value": "bar",
+    "options": {
+      "row": "🎯 Bar + Icon row",
+      "bar": "📊 Bar only",
+      "widget": "📦 Whole widget"
     },
     "group": "📝 Title & Text"
   },

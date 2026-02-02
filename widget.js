@@ -9,47 +9,19 @@ var kawaiiLastMilestone = 0;
 var kawaiiEffectDuration = 3000;
 
 var kawaiiIcons = {
-  'star': '⭐',
-  'heart': '💖',
-  'sparkle': '✨',
-  'flower': '🌸',
-  'rainbow': '🌈',
-  'moon': '🌙',
-  'cloud': '☁️',
-  'diamond': '💎',
-  'music': '🎵',
-  'gift': '🎁',
-  'coin': '🪙',
-  'dollar': '💵',
-  'trophy': '🏆',
-  'crown': '👑',
-  'butterfly': '🦋',
-  'candy': '🍬',
-  'cake': '🧁',
-  'cherry': '🍒',
-  'strawberry': '🍓',
-  'peach': '🍑',
-  'lollipop': '🍭',
-  'donut': '🍩',
-  'icecream': '🍦',
-  'cookie': '🍪',
-  'milk': '🥛',
-  'boba': '🧋',
-  'cat': '🐱',
-  'bunny': '🐰',
-  'bear': '🧸',
-  'paw': '🐾',
-  'unicorn': '🦄',
-  'fairy': '🧚',
-  'angel': '👼',
-  'ribbon': '🎀',
-  'bow': '🎀',
-  'balloon': '🎈',
-  'confetti': '🎊',
-  'magic': '🪄',
-  'crystal': '🔮',
-  'gem': '💠'
+  'star': '⭐', 'heart': '💖', 'sparkle': '✨', 'flower': '🌸', 'rainbow': '🌈',
+  'moon': '🌙', 'cloud': '☁️', 'diamond': '💎', 'music': '🎵', 'gift': '🎁',
+  'coin': '🪙', 'dollar': '💵', 'trophy': '🏆', 'crown': '👑', 'butterfly': '🦋',
+  'candy': '🍬', 'cake': '🧁', 'cherry': '🍒', 'strawberry': '🍓', 'peach': '🍑',
+  'lollipop': '🍭', 'donut': '🍩', 'icecream': '🍦', 'cookie': '🍪', 'milk': '🥛',
+  'boba': '🧋', 'cat': '🐱', 'bunny': '🐰', 'bear': '🧸', 'paw': '🐾',
+  'unicorn': '🦄', 'fairy': '🧚', 'angel': '👼', 'ribbon': '🎀', 'bow': '🎀',
+  'balloon': '🎈', 'confetti': '🎊', 'magic': '🪄', 'crystal': '🔮', 'gem': '💠'
 };
+
+// Active elements
+var kawaiiActiveTitleEl = null;
+var kawaiiActiveValuesEl = null;
 
 // Load widget
 window.addEventListener('onWidgetLoad', function(obj) {
@@ -191,66 +163,14 @@ function kawaiiApplyTheme() {
   root.style.setProperty('--kawaii-icon-size', (kawaiiFieldData.iconSize || 28) + 'px');
   root.style.setProperty('--kawaii-corner-size', (kawaiiFieldData.cornerSize || 12) + 'px');
 
-  // Set title and title position
-  var titleEl = document.getElementById('kawaii-title');
-  var titleText = kawaiiFieldData.goalTitle || 'GOAL';
-  var titlePosition = kawaiiFieldData.titlePosition || 'top';
+  // Setup Title
+  kawaiiSetupTitle();
 
-  // Remove old position classes
-  titleEl.classList.remove('pos-top', 'pos-top-left', 'pos-top-right', 'hidden');
+  // Setup Icon
+  kawaiiSetupIcon();
 
-  if (titlePosition === 'hidden') {
-    titleEl.classList.add('hidden');
-  } else {
-    titleEl.textContent = titleText;
-    titleEl.classList.add('pos-' + titlePosition);
-  }
-
-  // Set icon and icon position
-  var iconEl = document.getElementById('kawaii-icon');
-  var iconPosition = kawaiiFieldData.iconPosition || 'left';
-
-  // Remove old icon position classes
-  iconEl.classList.remove('icon-left', 'icon-right', 'hidden');
-  titleEl.classList.remove('no-icon', 'icon-left', 'icon-right');
-
-  if (kawaiiFieldData.showIcon !== false) {
-    var iconType = kawaiiFieldData.iconType || 'star';
-    if (iconType === 'custom' && kawaiiFieldData.customIcon) {
-      iconEl.innerHTML = '<img src="' + kawaiiFieldData.customIcon + '" style="width:' + (kawaiiFieldData.iconSize || 28) + 'px;height:' + (kawaiiFieldData.iconSize || 28) + 'px;">';
-    } else {
-      iconEl.textContent = kawaiiIcons[iconType] || '⭐';
-    }
-    iconEl.classList.add('icon-' + iconPosition);
-    titleEl.classList.add('icon-' + iconPosition);
-  } else {
-    iconEl.classList.add('hidden');
-    titleEl.classList.add('no-icon');
-  }
-
-  // Set values position
-  var valuesEl = document.getElementById('kawaii-values');
-  var valuesPosition = kawaiiFieldData.valuesPosition || 'below';
-  var barEl = document.getElementById('kawaii-bar');
-
-  // Remove old values position classes
-  valuesEl.classList.remove('pos-below', 'pos-below-left', 'pos-below-right', 'pos-inside', 'hidden');
-  barEl.classList.remove('has-values-inside');
-
-  if (valuesPosition === 'hidden') {
-    valuesEl.classList.add('hidden');
-  } else if (valuesPosition === 'inside') {
-    valuesEl.classList.add('pos-inside');
-    barEl.classList.add('has-values-inside');
-    // Move values inside bar
-    barEl.appendChild(valuesEl);
-  } else {
-    valuesEl.classList.add('pos-' + valuesPosition);
-    // Make sure values are outside bar (after bar in DOM)
-    if (valuesEl.parentNode === barEl) {
-      container.appendChild(valuesEl);
-    }
-  }
+  // Setup Values
+  kawaiiSetupValues();
 
   // Corner decorations
   var corners = document.querySelectorAll('.corner');
@@ -259,20 +179,175 @@ function kawaiiApplyTheme() {
   } else {
     corners.forEach(function(c) { c.style.display = ''; });
   }
+}
 
-  // Set goal value
-  var goalEl = document.getElementById('kawaii-goal');
-  var eventType = kawaiiFieldData.eventType || 'manual';
-  var isTipType = (eventType === 'tip' || eventType === 'superchat');
-  goalEl.textContent = isTipType ? kawaiiCurrencySymbol + kawaiiGoalAmount : kawaiiGoalAmount;
+function kawaiiSetupTitle() {
+  var titleText = kawaiiFieldData.goalTitle || 'GOAL';
+  var titlePosition = kawaiiFieldData.titlePosition || 'top';
+  var titleAlign = kawaiiFieldData.titleAlign || 'bar';
+
+  // Hide all title elements first
+  var allTitles = document.querySelectorAll('.kawaii-title');
+  allTitles.forEach(function(el) {
+    el.style.display = 'none';
+    el.textContent = '';
+    el.className = 'kawaii-title';
+  });
+
+  if (titlePosition === 'hidden') {
+    kawaiiActiveTitleEl = null;
+    return;
+  }
+
+  // Determine which element to use based on position
+  var titleEl = null;
+  var alignClass = '';
+
+  switch(titlePosition) {
+    case 'top':
+    case 'top-left':
+    case 'top-right':
+      titleEl = document.getElementById('kawaii-title-top');
+      if (titlePosition === 'top-left') alignClass = 'align-left';
+      else if (titlePosition === 'top-right') alignClass = 'align-right';
+      else alignClass = 'align-center';
+      break;
+    case 'bottom':
+    case 'bottom-left':
+    case 'bottom-right':
+      titleEl = document.getElementById('kawaii-title-bottom');
+      if (titlePosition === 'bottom-left') alignClass = 'align-left';
+      else if (titlePosition === 'bottom-right') alignClass = 'align-right';
+      else alignClass = 'align-center';
+      break;
+    case 'left':
+      titleEl = document.getElementById('kawaii-title-left');
+      break;
+    case 'right':
+      titleEl = document.getElementById('kawaii-title-right');
+      break;
+  }
+
+  if (titleEl) {
+    titleEl.textContent = titleText;
+    titleEl.style.display = 'block';
+    if (alignClass) titleEl.classList.add(alignClass);
+    kawaiiActiveTitleEl = titleEl;
+  }
+}
+
+function kawaiiSetupIcon() {
+  var showIcon = kawaiiFieldData.showIcon !== false;
+  var iconPosition = kawaiiFieldData.iconPosition || 'left';
+  var iconType = kawaiiFieldData.iconType || 'star';
+
+  // Hide all icons first
+  var iconLeft = document.getElementById('kawaii-icon-left');
+  var iconRight = document.getElementById('kawaii-icon-right');
+
+  iconLeft.style.display = 'none';
+  iconRight.style.display = 'none';
+  iconLeft.innerHTML = '';
+  iconRight.innerHTML = '';
+
+  if (!showIcon) return;
+
+  var iconEl = iconPosition === 'right' ? iconRight : iconLeft;
+
+  if (iconType === 'custom' && kawaiiFieldData.customIcon) {
+    iconEl.innerHTML = '<img src="' + kawaiiFieldData.customIcon + '" style="width:100%;height:100%;">';
+  } else {
+    iconEl.textContent = kawaiiIcons[iconType] || '⭐';
+  }
+
+  iconEl.style.display = 'flex';
+}
+
+function kawaiiSetupValues() {
+  var valuesPosition = kawaiiFieldData.valuesPosition || 'below';
+  var valuesAlign = kawaiiFieldData.valuesAlign || 'bar';
+
+  // Hide all values elements first
+  var allValues = document.querySelectorAll('.kawaii-values');
+  allValues.forEach(function(el) {
+    el.style.display = 'none';
+    el.innerHTML = '';
+    el.className = 'kawaii-values';
+  });
+
+  if (valuesPosition === 'hidden') {
+    kawaiiActiveValuesEl = null;
+    return;
+  }
+
+  // Determine which element to use based on position
+  var valuesEl = null;
+  var alignClass = '';
+  var posClass = '';
+
+  switch(valuesPosition) {
+    case 'below':
+    case 'below-left':
+    case 'below-right':
+      valuesEl = document.getElementById('kawaii-values-below');
+      valuesEl.classList.add('kawaii-values-bar');
+      if (valuesPosition === 'below-left') alignClass = 'align-left';
+      else if (valuesPosition === 'below-right') alignClass = 'align-right';
+      else alignClass = 'align-center';
+      break;
+    case 'above':
+    case 'above-left':
+    case 'above-right':
+      valuesEl = document.getElementById('kawaii-values-above');
+      valuesEl.classList.add('kawaii-values-bar');
+      if (valuesPosition === 'above-left') alignClass = 'align-left';
+      else if (valuesPosition === 'above-right') alignClass = 'align-right';
+      else alignClass = 'align-center';
+      break;
+    case 'inside-left':
+    case 'inside-center':
+    case 'inside-right':
+      valuesEl = document.getElementById('kawaii-values-inside');
+      if (valuesPosition === 'inside-left') posClass = 'pos-left';
+      else if (valuesPosition === 'inside-right') posClass = 'pos-right';
+      else posClass = 'pos-center';
+      break;
+    case 'left':
+      valuesEl = document.getElementById('kawaii-values-left');
+      valuesEl.classList.add('kawaii-values-side');
+      break;
+    case 'right':
+      valuesEl = document.getElementById('kawaii-values-right');
+      valuesEl.classList.add('kawaii-values-side');
+      break;
+  }
+
+  if (valuesEl) {
+    // Create values content
+    valuesEl.innerHTML = '<span class="kawaii-current">0</span><span class="kawaii-separator">|</span><span class="kawaii-goal">100</span>';
+    valuesEl.style.display = 'flex';
+    if (alignClass) valuesEl.classList.add(alignClass);
+    if (posClass) valuesEl.classList.add(posClass);
+    kawaiiActiveValuesEl = valuesEl;
+
+    // Set initial values
+    var eventType = kawaiiFieldData.eventType || 'manual';
+    var isTipType = (eventType === 'tip' || eventType === 'superchat');
+    var goalEl = valuesEl.querySelector('.kawaii-goal');
+    if (goalEl) {
+      goalEl.textContent = isTipType ? kawaiiCurrencySymbol + kawaiiGoalAmount : kawaiiGoalAmount;
+    }
+  }
 }
 
 function kawaiiSetValuesDisplay(current, goal) {
+  if (!kawaiiActiveValuesEl) return;
+
   var eventType = kawaiiFieldData.eventType || 'manual';
   var isTipType = (eventType === 'tip' || eventType === 'superchat');
 
-  var currEl = document.getElementById('kawaii-current');
-  var goalEl = document.getElementById('kawaii-goal');
+  var currEl = kawaiiActiveValuesEl.querySelector('.kawaii-current');
+  var goalEl = kawaiiActiveValuesEl.querySelector('.kawaii-goal');
 
   if (currEl) {
     currEl.textContent = isTipType ? kawaiiCurrencySymbol + Math.round(current) : Math.round(current);
@@ -330,21 +405,14 @@ function kawaiiAnimateBar() {
   container.classList.remove('kawaii-bounce', 'kawaii-wiggle', 'kawaii-pulse', 'kawaii-shake');
   void container.offsetWidth;
 
-  if (animation === 'bounce') {
-    container.classList.add('kawaii-bounce');
-  } else if (animation === 'wiggle') {
-    container.classList.add('kawaii-wiggle');
-  } else if (animation === 'pulse') {
-    container.classList.add('kawaii-pulse');
-  } else if (animation === 'shake') {
-    container.classList.add('kawaii-shake');
+  if (animation !== 'none') {
+    container.classList.add('kawaii-' + animation);
   }
 }
 
 function kawaiiCelebrate() {
   var effect = kawaiiFieldData.celebrationEffect || 'hearts';
   var effectsBox = document.getElementById('kawaii-effects');
-  var container = document.getElementById('kawaii-note-container');
 
   effectsBox.innerHTML = '';
 
@@ -456,7 +524,6 @@ function kawaiiEffectFlowers(box) {
           p.className = 'kawaii-particle';
           p.textContent = flowers[Math.floor(Math.random()*flowers.length)];
           var size = 16 + Math.random() * 14;
-          var drift = (Math.random() - 0.5) * 40;
           p.style.cssText = 'left:' + (Math.random()*100) + '%;top:-10px;font-size:' + size + 'px;animation:kawaii-confetti ' + (1.2+Math.random()*0.6) + 's ease forwards;animation-delay:' + (Math.random()*0.4) + 's;';
           box.appendChild(p);
           setTimeout(function(el) { if(el.parentNode) el.parentNode.removeChild(el); }, 2500, p);
@@ -631,7 +698,6 @@ function kawaiiHandleCommand(event) {
   if (!event.data || !event.data.text) return;
 
   var text = event.data.text.trim();
-  var user = event.data.displayName || event.data.nick || '';
   var isBroadcaster = event.data.badges && event.data.badges.some(function(b) { return b.type === 'broadcaster'; });
   var isMod = event.data.badges && event.data.badges.some(function(b) { return b.type === 'moderator'; });
 
