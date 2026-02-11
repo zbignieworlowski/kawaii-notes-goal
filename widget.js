@@ -193,9 +193,14 @@ function kawaiiApplyTheme() {
   var container = document.getElementById('kawaii-note-container');
   var theme = kawaiiFieldData.colorTheme || 'mint';
 
+  console.log('kawaiiApplyTheme called, theme:', theme);
+  console.log('kawaiiFieldData.colorTheme:', kawaiiFieldData.colorTheme);
+  console.log('container:', container);
+
   // Remove old theme classes
   container.className = '';
   container.classList.add('theme-' + theme);
+  console.log('Applied class:', container.className);
 
   // Apply custom colors if theme is custom
   if (theme === 'custom') {
