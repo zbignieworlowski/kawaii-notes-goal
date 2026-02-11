@@ -68,9 +68,15 @@ body {
   white-space: nowrap;
 }
 
-/* Title top/bottom positions */
-.kawaii-title-top { margin-bottom: 10px; }
-.kawaii-title-bottom { margin-top: 10px; }
+/* ==================== TITLE WIDGET ALIGNMENT ==================== */
+/* Title top/bottom - outside main, centered to widget */
+#kawaii-title-top {
+  margin-bottom: 10px;
+}
+
+#kawaii-title-bottom {
+  margin-top: 10px;
+}
 
 /* Title alignment */
 .kawaii-title.align-left { text-align: left; }
@@ -106,14 +112,74 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 }
 
-#kawaii-bar-wrapper {
+/* Bar column - contains row-aligned and bar elements */
+#kawaii-bar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   flex: 1;
+}
+
+/* Bar wrapper - contains bar-aligned elements and the bar itself */
+#kawaii-bar-wrapper {
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 100%;
 }
+
+/* ==================== TITLE ROW ALIGNMENT ==================== */
+/* Title row-top/row-bottom - inside bar-column, aligned to icon+bar row */
+.kawaii-title-row {
+  margin-bottom: 8px;
+}
+
+#kawaii-title-row-bottom {
+  margin-bottom: 0;
+  margin-top: 8px;
+}
+
+.kawaii-title-row.align-left { align-self: flex-start; }
+.kawaii-title-row.align-center { align-self: center; }
+.kawaii-title-row.align-right { align-self: flex-end; }
+
+/* ==================== TITLE BAR ALIGNMENT ==================== */
+/* Title bar-top/bar-bottom - absolute inside bar-wrapper */
+.kawaii-title-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.kawaii-title-bar.align-center { text-align: center; }
+.kawaii-title-bar.align-left { text-align: left; }
+.kawaii-title-bar.align-right { text-align: right; }
+
+#kawaii-title-bar-top {
+  bottom: calc(100% + 8px);
+}
+
+#kawaii-title-bar-bottom {
+  top: calc(100% + 8px);
+}
+
+/* ==================== VALUES ROW ALIGNMENT ==================== */
+/* Values row-top/row-bottom - inside bar-column */
+.kawaii-values-row {
+  margin-bottom: 8px;
+}
+
+#kawaii-values-row-bottom {
+  margin-bottom: 0;
+  margin-top: 8px;
+}
+
+.kawaii-values-row.align-left { align-self: flex-start; }
+.kawaii-values-row.align-center { align-self: center; }
+.kawaii-values-row.align-right { align-self: flex-end; }
 
 /* ==================== PROGRESS BAR ==================== */
 #kawaii-bar {
@@ -149,10 +215,50 @@ body {
 
 .kawaii-separator { opacity: 0.5; }
 
-/* Values above/below bar */
-.kawaii-values-bar { margin: 8px 0; }
-.kawaii-values-above { margin-bottom: 8px; margin-top: 0; }
-.kawaii-values-below { margin-top: 8px; margin-bottom: 0; }
+/* ==================== VALUES WIDGET ALIGNMENT ==================== */
+/* Values top/bottom - outside main, aligned to widget */
+#kawaii-values-top {
+  margin-bottom: 8px;
+}
+
+#kawaii-values-bottom {
+  margin-top: 8px;
+}
+
+#kawaii-values-top.align-left,
+#kawaii-values-bottom.align-left {
+  justify-content: flex-start;
+}
+
+#kawaii-values-top.align-center,
+#kawaii-values-bottom.align-center {
+  justify-content: center;
+}
+
+#kawaii-values-top.align-right,
+#kawaii-values-bottom.align-right {
+  justify-content: flex-end;
+}
+
+/* ==================== VALUES BAR ALIGNMENT ==================== */
+/* Values above/below - absolute inside bar-wrapper */
+.kawaii-values-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.kawaii-values-bar.align-center { justify-content: center; }
+.kawaii-values-bar.align-left { justify-content: flex-start; }
+.kawaii-values-bar.align-right { justify-content: flex-end; }
+
+#kawaii-values-above {
+  bottom: calc(100% + 6px);
+}
+
+#kawaii-values-below {
+  top: calc(100% + 6px);
+}
 
 /* Values alignment */
 .kawaii-values.align-left { justify-content: flex-start; }

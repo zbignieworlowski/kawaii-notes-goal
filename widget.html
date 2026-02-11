@@ -6,47 +6,57 @@
   <div class="corner corner-bl"></div>
   <div class="corner corner-br"></div>
 
-  <!-- Title slots for different positions -->
+  <!-- Title/Values for widget-wide alignment (above everything) -->
   <div id="kawaii-title-top" class="kawaii-title"></div>
   <div id="kawaii-values-top" class="kawaii-values"></div>
 
-  <!-- Main content area -->
+  <!-- Main row: icon + bar area + icon -->
   <div id="kawaii-main">
     <!-- Icon (left position) -->
     <div id="kawaii-icon-left" class="kawaii-icon"></div>
 
-    <!-- Title left of bar -->
+    <!-- Title/Values left of bar -->
     <div id="kawaii-title-left" class="kawaii-title kawaii-title-side"></div>
-
-    <!-- Values left of bar -->
     <div id="kawaii-values-left" class="kawaii-values kawaii-values-side"></div>
 
-    <!-- Bar wrapper -->
-    <div id="kawaii-bar-wrapper">
-      <!-- Values above bar -->
-      <div id="kawaii-values-above" class="kawaii-values kawaii-values-bar"></div>
+    <!-- Bar column with row-aligned elements -->
+    <div id="kawaii-bar-column">
+      <!-- Row-aligned elements (align to bar+icon row) -->
+      <div id="kawaii-title-row-top" class="kawaii-title kawaii-title-row"></div>
+      <div id="kawaii-values-row-top" class="kawaii-values kawaii-values-row"></div>
 
-      <!-- Progress bar -->
-      <div id="kawaii-bar">
-        <div id="kawaii-bar-fill"></div>
-        <!-- Values inside bar -->
-        <div id="kawaii-values-inside" class="kawaii-values"></div>
+      <!-- Bar wrapper with bar-aligned elements -->
+      <div id="kawaii-bar-wrapper">
+        <!-- Bar-aligned title/values above -->
+        <div id="kawaii-title-bar-top" class="kawaii-title kawaii-title-bar"></div>
+        <div id="kawaii-values-above" class="kawaii-values kawaii-values-bar"></div>
+
+        <!-- Progress bar -->
+        <div id="kawaii-bar">
+          <div id="kawaii-bar-fill"></div>
+          <!-- Values inside bar -->
+          <div id="kawaii-values-inside" class="kawaii-values"></div>
+        </div>
+
+        <!-- Bar-aligned title/values below -->
+        <div id="kawaii-values-below" class="kawaii-values kawaii-values-bar"></div>
+        <div id="kawaii-title-bar-bottom" class="kawaii-title kawaii-title-bar"></div>
       </div>
 
-      <!-- Values below bar -->
-      <div id="kawaii-values-below" class="kawaii-values kawaii-values-bar"></div>
+      <!-- Row-aligned elements below -->
+      <div id="kawaii-values-row-bottom" class="kawaii-values kawaii-values-row"></div>
+      <div id="kawaii-title-row-bottom" class="kawaii-title kawaii-title-row"></div>
     </div>
 
-    <!-- Values right of bar -->
+    <!-- Title/Values right of bar -->
     <div id="kawaii-values-right" class="kawaii-values kawaii-values-side"></div>
-
-    <!-- Title right of bar -->
     <div id="kawaii-title-right" class="kawaii-title kawaii-title-side"></div>
 
     <!-- Icon (right position) -->
     <div id="kawaii-icon-right" class="kawaii-icon"></div>
   </div>
 
+  <!-- Title/Values for widget-wide alignment (below everything) -->
   <div id="kawaii-values-bottom" class="kawaii-values"></div>
   <div id="kawaii-title-bottom" class="kawaii-title"></div>
 

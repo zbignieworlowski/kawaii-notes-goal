@@ -81,22 +81,18 @@ window.addEventListener('onWidgetLoad', function(obj) {
 
   // Store SE base progress and apply offsets
   kawaiiSeBaseProgress = kawaiiProgress;
-  console.log('SE session value:', kawaiiSeBaseProgress);
 
   // 1. Apply startingOffset from Fields (permanent setting)
   var fieldsOffset = parseInt(kawaiiFieldData.startingOffset) || 0;
-  console.log('startingOffset from Fields:', fieldsOffset);
 
   // 2. Apply localStorage offset (dynamic from commands)
   var savedOffset = kawaiiLoadOffset();
-  console.log('localStorage offset:', savedOffset);
 
   // Apply total offset
   var totalOffset = fieldsOffset + savedOffset;
   if (totalOffset !== 0) {
     kawaiiProgress = Math.max(0, kawaiiProgress + totalOffset);
   }
-  console.log('Final progress:', kawaiiProgress, '(SE:', kawaiiSeBaseProgress, '+ offset:', totalOffset, ')');
 
   kawaiiUpdateBar();
 
@@ -193,14 +189,9 @@ function kawaiiApplyTheme() {
   var container = document.getElementById('kawaii-note-container');
   var theme = kawaiiFieldData.colorTheme || 'mint';
 
-  console.log('kawaiiApplyTheme called, theme:', theme);
-  console.log('kawaiiFieldData.colorTheme:', kawaiiFieldData.colorTheme);
-  console.log('container:', container);
-
   // Remove old theme classes
   container.className = '';
   container.classList.add('theme-' + theme);
-  console.log('Applied class:', container.className);
 
   // Apply custom colors if theme is custom
   if (theme === 'custom') {
@@ -239,55 +230,78 @@ function kawaiiApplyTheme() {
 function kawaiiSetupTitle() {
   var titleText = kawaiiFieldData.goalTitle || 'GOAL';
   var titlePosition = kawaiiFieldData.titlePosition || 'top';
-  var titleAlign = kawaiiFieldData.titleAlign || 'bar';
+  var titleAlign = kawaiiFieldData.titleAlign || 'row';
 
-  // Hide all title elements first
-  var allTitles = document.querySelectorAll('.kawaii-title');
-  allTitles.forEach(function(el) {
-    el.style.display = 'none';
-    el.textContent = '';
-    el.className = 'kawaii-title';
+  // Parse title position (e.g., 'top-left' -> base: 'top', align: 'left')
+  var titleParts = titlePosition.split('-');
+  var titleBase = titleParts[0]; // top, bottom, left, right, hidden
+  var titleHAlign = titleParts[1] || 'center'; // left, right, center
+
+  // All possible title elements
+  var titleTop = document.getElementById('kawaii-title-top');
+  var titleBottom = document.getElementById('kawaii-title-bottom');
+  var titleLeft = document.getElementById('kawaii-title-left');
+  var titleRight = document.getElementById('kawaii-title-right');
+  var titleBarTop = document.getElementById('kawaii-title-bar-top');
+  var titleBarBottom = document.getElementById('kawaii-title-bar-bottom');
+  var titleRowTop = document.getElementById('kawaii-title-row-top');
+  var titleRowBottom = document.getElementById('kawaii-title-row-bottom');
+
+  // Hide all titles and remove alignment classes
+  [titleTop, titleBottom, titleLeft, titleRight, titleBarTop, titleBarBottom, titleRowTop, titleRowBottom].forEach(function(el) {
+    if (el) {
+      el.style.display = 'none';
+      el.textContent = '';
+      el.className = el.className.replace(/kawaii-title-\w+/g, '').trim();
+      el.classList.remove('align-left', 'align-center', 'align-right');
+      el.classList.add('kawaii-title');
+    }
   });
 
-  if (titlePosition === 'hidden') {
+  if (titleBase === 'hidden' || !titleText) {
     kawaiiActiveTitleEl = null;
     return;
   }
 
-  // Determine which element to use based on position
-  var titleEl = null;
-  var alignClass = '';
+  var targetTitle = null;
 
-  switch(titlePosition) {
-    case 'top':
-    case 'top-left':
-    case 'top-right':
-      titleEl = document.getElementById('kawaii-title-top');
-      if (titlePosition === 'top-left') alignClass = 'align-left';
-      else if (titlePosition === 'top-right') alignClass = 'align-right';
-      else alignClass = 'align-center';
-      break;
-    case 'bottom':
-    case 'bottom-left':
-    case 'bottom-right':
-      titleEl = document.getElementById('kawaii-title-bottom');
-      if (titlePosition === 'bottom-left') alignClass = 'align-left';
-      else if (titlePosition === 'bottom-right') alignClass = 'align-right';
-      else alignClass = 'align-center';
-      break;
-    case 'left':
-      titleEl = document.getElementById('kawaii-title-left');
-      break;
-    case 'right':
-      titleEl = document.getElementById('kawaii-title-right');
-      break;
+  // Choose correct element based on position and alignment
+  if (titleBase === 'top') {
+    if (titleAlign === 'bar') {
+      targetTitle = titleBarTop;
+      targetTitle.classList.add('kawaii-title-bar');
+    } else if (titleAlign === 'row') {
+      targetTitle = titleRowTop;
+      targetTitle.classList.add('kawaii-title-row');
+    } else {
+      targetTitle = titleTop;
+    }
+  } else if (titleBase === 'bottom') {
+    if (titleAlign === 'bar') {
+      targetTitle = titleBarBottom;
+      targetTitle.classList.add('kawaii-title-bar');
+    } else if (titleAlign === 'row') {
+      targetTitle = titleRowBottom;
+      targetTitle.classList.add('kawaii-title-row');
+    } else {
+      targetTitle = titleBottom;
+    }
+  } else if (titleBase === 'left') {
+    targetTitle = titleLeft;
+    targetTitle.classList.add('kawaii-title-side');
+  } else if (titleBase === 'right') {
+    targetTitle = titleRight;
+    targetTitle.classList.add('kawaii-title-side');
   }
 
-  if (titleEl) {
-    titleEl.textContent = titleText;
-    titleEl.style.display = 'block';
-    if (alignClass) titleEl.classList.add(alignClass);
-    kawaiiActiveTitleEl = titleEl;
+  if (targetTitle) {
+    targetTitle.textContent = titleText;
+    targetTitle.style.display = 'block';
+    // Add alignment class for top/bottom positions
+    if (titleBase === 'top' || titleBase === 'bottom') {
+      targetTitle.classList.add('align-' + titleHAlign);
+    }
+    kawaiiActiveTitleEl = targetTitle;
   }
 }
 
@@ -320,75 +334,88 @@ function kawaiiSetupIcon() {
 
 function kawaiiSetupValues() {
   var valuesPosition = kawaiiFieldData.valuesPosition || 'below';
-  var valuesAlign = kawaiiFieldData.valuesAlign || 'bar';
+  var valuesAlign = kawaiiFieldData.valuesAlign || 'row';
 
-  // Hide all values elements first
-  var allValues = document.querySelectorAll('.kawaii-values');
-  allValues.forEach(function(el) {
-    el.style.display = 'none';
-    el.innerHTML = '';
-    el.className = 'kawaii-values';
+  // Parse values position (e.g., 'below-left' -> base: 'below', align: 'left')
+  var valParts = valuesPosition.split('-');
+  var valBase = valParts[0]; // below, above, inside, left, right, hidden
+  var valHAlign = valParts[1] || 'center'; // left, right, center
+
+  // All possible values elements
+  var valAbove = document.getElementById('kawaii-values-above');
+  var valBelow = document.getElementById('kawaii-values-below');
+  var valTop = document.getElementById('kawaii-values-top');
+  var valBottom = document.getElementById('kawaii-values-bottom');
+  var valRowTop = document.getElementById('kawaii-values-row-top');
+  var valRowBottom = document.getElementById('kawaii-values-row-bottom');
+  var valLeft = document.getElementById('kawaii-values-left');
+  var valRight = document.getElementById('kawaii-values-right');
+  var valInside = document.getElementById('kawaii-values-inside');
+
+  // Hide all values containers and remove classes
+  [valAbove, valBelow, valTop, valBottom, valRowTop, valRowBottom, valLeft, valRight, valInside].forEach(function(el) {
+    if (el) {
+      el.style.display = 'none';
+      el.innerHTML = '';
+      el.classList.remove('pos-left', 'pos-center', 'pos-right', 'align-left', 'align-center', 'align-right');
+      el.classList.remove('kawaii-values-bar', 'kawaii-values-row', 'kawaii-values-side');
+      el.classList.add('kawaii-values');
+    }
   });
 
-  if (valuesPosition === 'hidden') {
+  if (valBase === 'hidden') {
     kawaiiActiveValuesEl = null;
     return;
   }
 
-  // Determine which element to use based on position
-  var valuesEl = null;
-  var alignClass = '';
-  var posClass = '';
+  var targetEl = null;
 
-  switch(valuesPosition) {
-    case 'below':
-    case 'below-left':
-    case 'below-right':
-      valuesEl = document.getElementById('kawaii-values-below');
-      valuesEl.classList.add('kawaii-values-bar');
-      if (valuesPosition === 'below-left') alignClass = 'align-left';
-      else if (valuesPosition === 'below-right') alignClass = 'align-right';
-      else alignClass = 'align-center';
-      break;
-    case 'above':
-    case 'above-left':
-    case 'above-right':
-      valuesEl = document.getElementById('kawaii-values-above');
-      valuesEl.classList.add('kawaii-values-bar');
-      if (valuesPosition === 'above-left') alignClass = 'align-left';
-      else if (valuesPosition === 'above-right') alignClass = 'align-right';
-      else alignClass = 'align-center';
-      break;
-    case 'inside-left':
-    case 'inside-center':
-    case 'inside-right':
-      valuesEl = document.getElementById('kawaii-values-inside');
-      if (valuesPosition === 'inside-left') posClass = 'pos-left';
-      else if (valuesPosition === 'inside-right') posClass = 'pos-right';
-      else posClass = 'pos-center';
-      break;
-    case 'left':
-      valuesEl = document.getElementById('kawaii-values-left');
-      valuesEl.classList.add('kawaii-values-side');
-      break;
-    case 'right':
-      valuesEl = document.getElementById('kawaii-values-right');
-      valuesEl.classList.add('kawaii-values-side');
-      break;
+  // Choose correct element based on position and alignment
+  if (valBase === 'above') {
+    if (valuesAlign === 'bar') {
+      targetEl = valAbove;
+      targetEl.classList.add('kawaii-values-bar');
+    } else if (valuesAlign === 'row') {
+      targetEl = valRowTop;
+      targetEl.classList.add('kawaii-values-row');
+    } else {
+      targetEl = valTop;
+    }
+    targetEl.classList.add('align-' + valHAlign);
+  } else if (valBase === 'below') {
+    if (valuesAlign === 'bar') {
+      targetEl = valBelow;
+      targetEl.classList.add('kawaii-values-bar');
+    } else if (valuesAlign === 'row') {
+      targetEl = valRowBottom;
+      targetEl.classList.add('kawaii-values-row');
+    } else {
+      targetEl = valBottom;
+    }
+    targetEl.classList.add('align-' + valHAlign);
+  } else if (valBase === 'left') {
+    targetEl = valLeft;
+    targetEl.classList.add('kawaii-values-side');
+  } else if (valBase === 'right') {
+    targetEl = valRight;
+    targetEl.classList.add('kawaii-values-side');
+  } else if (valBase === 'inside') {
+    targetEl = valInside;
+    if (valHAlign === 'left') targetEl.classList.add('pos-left');
+    else if (valHAlign === 'right') targetEl.classList.add('pos-right');
+    else targetEl.classList.add('pos-center');
   }
 
-  if (valuesEl) {
+  if (targetEl) {
     // Create values content
-    valuesEl.innerHTML = '<span class="kawaii-current">0</span><span class="kawaii-separator">|</span><span class="kawaii-goal">100</span>';
-    valuesEl.style.display = 'flex';
-    if (alignClass) valuesEl.classList.add(alignClass);
-    if (posClass) valuesEl.classList.add(posClass);
-    kawaiiActiveValuesEl = valuesEl;
+    targetEl.innerHTML = '<span class="kawaii-current">0</span><span class="kawaii-separator">|</span><span class="kawaii-goal">100</span>';
+    targetEl.style.display = 'flex';
+    kawaiiActiveValuesEl = targetEl;
 
     // Set initial values
     var eventType = kawaiiFieldData.eventType || 'manual';
     var isTipType = (eventType === 'tip' || eventType === 'superchat');
-    var goalEl = valuesEl.querySelector('.kawaii-goal');
+    var goalEl = targetEl.querySelector('.kawaii-goal');
     if (goalEl) {
       goalEl.textContent = isTipType ? kawaiiCurrencySymbol + kawaiiGoalAmount : kawaiiGoalAmount;
     }
