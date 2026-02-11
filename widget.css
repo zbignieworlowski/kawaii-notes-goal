@@ -33,6 +33,8 @@ body {
   border: var(--kawaii-border-width) solid var(--kawaii-border-color);
   border-radius: 8px;
   padding: 18px 22px;
+  margin-left: 20px;
+  margin-top: 20px;
   box-sizing: border-box;
   font-family: 'Nunito', sans-serif;
   box-shadow: 4px 4px 0px rgba(74, 74, 106, 0.15);
