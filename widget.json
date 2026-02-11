@@ -36,7 +36,7 @@
   },
   "startingOffset": {
     "type": "number",
-    "label": "Starting Offset (adjust SE count, e.g. -408 or +50)",
+    "label": "🔧 Adjust Count (+/-)",
     "value": 0,
     "min": -1000000,
     "max": 1000000,
