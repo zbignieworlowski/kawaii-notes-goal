@@ -7,6 +7,32 @@ var kawaiiCurrencySymbol = '$';
 var kawaiiWasComplete = false;
 var kawaiiLastMilestone = 0;
 var kawaiiEffectDuration = 3000;
+var kawaiiSeBaseProgress = 0; // Raw StreamElements session value (before manual offset)
+
+// Manual offset persistence (localStorage)
+function kawaiiGetStorageKey() {
+  var eventType = kawaiiFieldData.eventType || 'manual';
+  return 'kawaiiNotesOffset_' + eventType;
+}
+
+function kawaiiLoadOffset() {
+  try {
+    var saved = localStorage.getItem(kawaiiGetStorageKey());
+    return saved ? parseInt(saved) || 0 : 0;
+  } catch(e) { return 0; }
+}
+
+function kawaiiSaveOffset(newOffset) {
+  try {
+    localStorage.setItem(kawaiiGetStorageKey(), newOffset);
+  } catch(e) {}
+}
+
+function kawaiiClearOffset() {
+  try {
+    localStorage.removeItem(kawaiiGetStorageKey());
+  } catch(e) {}
+}
 
 var kawaiiIcons = {
   'star': '⭐', 'heart': '💖', 'sparkle': '✨', 'flower': '🌸', 'rainbow': '🌈',
@@ -52,6 +78,25 @@ window.addEventListener('onWidgetLoad', function(obj) {
       kawaiiProgress = parseFloat(sessionData[eventIndex]) || 0;
     }
   }
+
+  // Store SE base progress and apply offsets
+  kawaiiSeBaseProgress = kawaiiProgress;
+  console.log('SE session value:', kawaiiSeBaseProgress);
+
+  // 1. Apply startingOffset from Fields (permanent setting)
+  var fieldsOffset = parseInt(kawaiiFieldData.startingOffset) || 0;
+  console.log('startingOffset from Fields:', fieldsOffset);
+
+  // 2. Apply localStorage offset (dynamic from commands)
+  var savedOffset = kawaiiLoadOffset();
+  console.log('localStorage offset:', savedOffset);
+
+  // Apply total offset
+  var totalOffset = fieldsOffset + savedOffset;
+  if (totalOffset !== 0) {
+    kawaiiProgress = Math.max(0, kawaiiProgress + totalOffset);
+  }
+  console.log('Final progress:', kawaiiProgress, '(SE:', kawaiiSeBaseProgress, '+ offset:', totalOffset, ')');
 
   kawaiiUpdateBar();
 
@@ -721,16 +766,19 @@ function kawaiiHandleCommand(event) {
 
   if (cmd === cmdAdd.toLowerCase() && value > 0) {
     kawaiiProgress += value;
+    kawaiiSaveOffset(kawaiiProgress - kawaiiSeBaseProgress);
     kawaiiAnimateBar();
     kawaiiUpdateBar();
   }
   else if (cmd === cmdDrop.toLowerCase() && value > 0) {
     kawaiiProgress = Math.max(0, kawaiiProgress - value);
+    kawaiiSaveOffset(kawaiiProgress - kawaiiSeBaseProgress);
     kawaiiAnimateBar();
     kawaiiUpdateBar();
   }
   else if (cmd === cmdProgress.toLowerCase()) {
     kawaiiProgress = Math.max(0, value);
+    kawaiiSaveOffset(kawaiiProgress - kawaiiSeBaseProgress);
     kawaiiWasComplete = false;
     kawaiiLastMilestone = 0;
     kawaiiUpdateBar();
@@ -746,6 +794,7 @@ function kawaiiHandleCommand(event) {
     kawaiiProgress = 0;
     kawaiiWasComplete = false;
     kawaiiLastMilestone = 0;
+    kawaiiClearOffset();
     kawaiiUpdateBar();
     document.getElementById('kawaii-note-container').style.opacity = '1';
   }
