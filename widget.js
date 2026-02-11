@@ -104,15 +104,20 @@ window.addEventListener('onEventReceived', function(obj) {
   if (eventType === 'manual') return;
 
   var eventAmount = event.amount || 0;
-  var isGift = event.bulkGifted !== undefined;
-
   if (listener === 'follower-latest' && eventType === 'follower') {
     kawaiiProgress++;
     kawaiiAnimateBar();
     kawaiiUpdateBar();
   }
-  else if (listener === 'subscriber-latest' && eventType === 'subscriber' && !isGift) {
-    kawaiiProgress++;
+  else if (listener === 'subscriber-latest' && eventType === 'subscriber') {
+    // Skip individual gift recipients (they come with gifted:true but no bulkGifted)
+    // to avoid double-counting with the bulk event
+    if (event.gifted && !event.bulkGifted) {
+      return;
+    }
+    // For bulk/community gifts, use amount field for count
+    var subCount = event.bulkGifted ? (event.amount || 1) : 1;
+    kawaiiProgress += subCount;
     kawaiiAnimateBar();
     kawaiiUpdateBar();
   }
