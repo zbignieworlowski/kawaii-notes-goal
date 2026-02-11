@@ -36,7 +36,7 @@
   },
   "startingOffset": {
     "type": "number",
-    "label": "🔧 Adjust Count (+/-) · Leave at 0 if no adjustment needed",
+    "label": "🔧 Adjust Count (+/-)",
     "value": 0,
     "min": -1000000,
     "max": 1000000,
